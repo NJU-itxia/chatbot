@@ -18,20 +18,19 @@
 ### 项目结构
 
 ```
-.
-├── main
-│   ├── kotlin
-│   │   └── cn
-│   │       └── itxia
-│   │           └── chatbot
-│   │               ├── controller  # controller层，接受HTTP请求
-│   │               ├── dto         # dto，前端传来的数据
-│   │               ├── enum        # enum
-│   │               ├── service     # service层，执行业务逻辑
-│   │               ├── util        # 公共类
-│   │               └── vo          # vo，返回给前端的数据
-│   └── resources
-│       └── application.properties  # 配置文件
+── main
+    ├── kotlin
+    │   └── cn
+    │       └── itxia
+    │           └── chatbot
+    │               ├── controller  # controller层，接受HTTP请求
+    │               ├── dto         # dto，前端传来的数据
+    │               ├── enum        # enum
+    │               ├── service     # service层，执行业务逻辑
+    │               ├── util        # 公共类
+    │               └── vo          # vo，返回给前端的数据
+    └── resources
+        └── application.properties  # 配置文件
 ```
 
 ### 语言、框架
@@ -55,7 +54,7 @@ QQ机器人库暂选用[mirai](https://github.com/mamoe/mirai).
 
 #### 运行/调试
 
-打开IDE(A)，调试运行。
+打开IDE(A)，调试运行.
 
 或运行命令构建:
 ```shell
