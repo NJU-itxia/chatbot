@@ -24,8 +24,7 @@ class RepeaterService : MessageProcessService {
                 val content = when (arg) {
                     "on" -> {
                         isEnable = true
-                        "开启复读模式"
-
+                        "我只是个没有感情的复读机"
                     }
                     "off" -> {
                         isEnable = false
