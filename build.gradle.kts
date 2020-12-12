@@ -30,6 +30,9 @@ dependencies {
     implementation("net.mamoe:mirai-core:1.3.3")
     implementation("net.mamoe:mirai-core-qqandroid:1.3.3")
 
+    //http request lib
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
