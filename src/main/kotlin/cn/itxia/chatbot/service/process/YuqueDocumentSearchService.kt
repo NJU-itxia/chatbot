@@ -23,7 +23,12 @@ class YuqueDocumentSearchService : MessageProcessService {
 
     override fun process(incomingMessage: IncomingMessage): IntermediaMessage {
 
-        val (command, keyword) = incomingMessage.content.split(" ")
+        val split = incomingMessage.content.split(" ")
+        if (split.size != 2) {
+            return IntermediaMessage()
+        }
+
+        val (command, keyword) = split
         if (commandKeyWords.contains(command)) {
 
             val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${keyword.escapeHTML()}"
@@ -52,7 +57,7 @@ class YuqueDocumentSearchService : MessageProcessService {
                         ${data.summary.substring(0, 40)}...,
                         文档链接:https://yuque.com${data.url} ,
                         (共找到${resultCount}个结果)
-                        """.trimIndent().escapeHTML()
+                        """.trimIndent()
                     } else {
                         "什么都没找到😢"
                     }
