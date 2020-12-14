@@ -11,8 +11,11 @@ import okhttp3.Request
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
+/**
+ * 搜索语雀文档.
+ * */
 @Service
-class YuqueDocumentSearchService : MessageProcessService {
+class YuqueDocumentSearchService : CommandProcessService() {
 
     @Value("\${itxia.bot.yuque.token}")
     private lateinit var yuqueApiToken: String
@@ -21,74 +24,64 @@ class YuqueDocumentSearchService : MessageProcessService {
 
     private val client = OkHttpClient()
 
-    override fun process(message: IncomingMessage): ProcessResult {
+    override fun shouldExecute(commandName: String): Boolean {
+        return commandKeyWords.contains(commandName)
+    }
 
-        val split = message.content.split(" ")
-        if (split.size != 2) {
-            return ProcessResult.next()
-        }
+    override fun executeCommand(argument: String, message: IncomingMessage): ProcessResult {
+        val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${argument.escapeHTML()}"
 
-        val (command, keyword) = split
-        if (commandKeyWords.contains(command)) {
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .header("X-Auth-Token", yuqueApiToken)
+            .build()
 
-            val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${keyword.escapeHTML()}"
+        client.newCall(request).execute().use {
+            if (!it.isSuccessful) {
+                //TODO log this error
+                print("Failed to search yuque doc.")
+            }
+            try {
+                val body = it.body!!.string()
+                val result = ObjectMapper().registerModule(KotlinModule())
+                    .readValue(body, YuqueDocumentSearchResponse::class.java)
 
-            val request = Request.Builder()
-                .url(url)
-                .get()
-                .header("X-Auth-Token", yuqueApiToken)
-                .build()
+                val resultCount = result.meta.total
 
-            client.newCall(request).execute().use {
-                if (!it.isSuccessful) {
-                    //TODO log this error
-                    print("Failed to search yuque doc.")
-                }
-                try {
-                    val body = it.body!!.string()
-                    val result = ObjectMapper().registerModule(KotlinModule())
-                        .readValue(body, YuqueDocumentSearchResponse::class.java)
-
-                    val resultCount = result.meta.total
-
-                    val responseMessage = if (resultCount > 0) {
-                        val data = result.data[0]
-                        """
+                val responseMessage = if (resultCount > 0) {
+                    val data = result.data[0]
+                    """
                         ${data.summary.substring(0, 40)}...,
                         文档链接:https://yuque.com${data.url} ,
                         (共找到${resultCount}个结果)
                         """.trimIndent()
-                    } else {
-                        "什么都没找到😢"
-                    }
-
-
-                    //回复消息
-                    return ProcessResult.reply(
-                        TextResponseMessage(
-                            content = responseMessage,
-                            shouldQuoteReply = true
-                        )
-                    )
-                } catch (e: Exception) {
-                    //TODO log this
-                    e.printStackTrace()
+                } else {
+                    "什么都没找到😢"
                 }
 
+                //回复消息
+                return ProcessResult.reply(
+                    TextResponseMessage(
+                        content = responseMessage,
+                        shouldQuoteReply = true
+                    )
+                )
+            } catch (e: Exception) {
+                //TODO log this
+                e.printStackTrace()
+                return ProcessResult.stop()
             }
-
         }
-
-        return ProcessResult.next()
     }
-
-
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 private data class YuqueDocumentSearchResponse(
     val meta: Meta,
     val data: List<DataItem>
 ) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
     data class Meta(val total: Int)
 
     @JsonIgnoreProperties(ignoreUnknown = true)
