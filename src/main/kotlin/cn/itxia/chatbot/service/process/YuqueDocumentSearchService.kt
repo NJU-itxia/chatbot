@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.net.URLEncoder
 
 /**
  * 搜索语雀文档.
@@ -30,7 +31,9 @@ class YuqueDocumentSearchService : CommandProcessService() {
     }
 
     override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
-        val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${argument.escapeHTML()}"
+        val escapedKeyword = URLEncoder.encode(argument.escapeHTML(), "utf-8")
+
+        val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${escapedKeyword}"
 
         val request = Request.Builder()
             .url(url)
@@ -59,7 +62,7 @@ class YuqueDocumentSearchService : CommandProcessService() {
                         ${dataItem.summary.replace(Regex("\\<\\/?\\w+\\>"), "").substring(0, 45)}...,
                         链接:https://yuque.com${dataItem.url}
                         """.trimIndent()
-                        } + "\n------------\n(共找到${resultCount}个结果)"
+                        } + "\n------------\n共找到${resultCount}个结果,详见\nhttps://www.yuque.com/itxia/s?q=${escapedKeyword}"
                 } else {
                     "什么都没找到😢"
                 }
