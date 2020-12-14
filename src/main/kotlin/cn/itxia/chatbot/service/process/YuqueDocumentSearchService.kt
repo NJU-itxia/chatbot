@@ -2,6 +2,7 @@ package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
+import cn.itxia.chatbot.util.CommandWords
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -20,7 +21,7 @@ class YuqueDocumentSearchService : CommandProcessService() {
     @Value("\${itxia.bot.yuque.token}")
     private lateinit var yuqueApiToken: String
 
-    private val commandKeyWords = listOf("yuque", "语雀", "羽雀")
+    private val commandKeyWords = CommandWords.YUQUE_SEARCH
 
     private val client = OkHttpClient()
 

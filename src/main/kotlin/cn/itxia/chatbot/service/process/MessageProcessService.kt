@@ -3,6 +3,7 @@ package cn.itxia.chatbot.service.process
 import cn.itxia.chatbot.enum.MessageFrom
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
+import cn.itxia.chatbot.message.response.TextResponseMessage
 
 /**
  * 所有处理service的基类.
@@ -150,6 +151,21 @@ class ProcessResult private constructor(
         fun stop(): ProcessResult {
             return ProcessResult(shouldContinueProcess = false)
         }
+
+        /**
+         * 回复消息.
+         * */
+        fun reply(
+            textResponse: String,
+            quoteReply: Boolean = true,
+            shouldContinueProcess: Boolean = false
+        ): ProcessResult {
+            return ProcessResult(
+                shouldContinueProcess = shouldContinueProcess,
+                response = listOf(TextResponseMessage(content = textResponse, shouldQuoteReply = quoteReply))
+            )
+        }
+
     }
 }
 

@@ -2,6 +2,7 @@ package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
+import cn.itxia.chatbot.util.CommandWords
 import org.springframework.stereotype.Service
 
 /**
@@ -14,7 +15,7 @@ class RepeaterService : CommandProcessService() {
 
     private var isRepeaterEnable = false
 
-    private val commandKeyWords = listOf("复读", "复读机")
+    private val commandKeyWords = CommandWords.REPEATER
 
     override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
         return !isArgumentEmpty && commandKeyWords.contains(commandName)
