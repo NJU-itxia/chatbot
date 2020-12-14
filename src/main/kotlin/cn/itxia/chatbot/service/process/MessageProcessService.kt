@@ -1,5 +1,6 @@
 package cn.itxia.chatbot.service.process
 
+import cn.itxia.chatbot.enum.MessageFrom
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
 
@@ -33,22 +34,30 @@ abstract class MessageProcessService {
  * */
 abstract class CommandProcessService : MessageProcessService() {
 
+
     /**
      * 判断命令是否应该执行.
-     * 例如判断命令开头是否是"doc"或者"语雀".
+     * 例如你可判断命令开头是否是"doc"或者"语雀".
+     * @param commandName 命令名称
+     * @param isExplicitCall 是否是明确的调用(呼叫), QQ群里以"bot"开头或者网页端
+     * @param isArgumentEmpty 参数是否为空白
      * */
-    abstract fun shouldExecute(commandName: String): Boolean
+    abstract fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean
 
     /**
      * 执行命令.
+     * @param argument 参数字符串, 有可能是""(参见[shouldExecute])
+     * @param isExplicitCall 是否是明确的调用(呼叫), QQ群里以"bot"开头或者网页端
+     * @param message 原始消息
      * */
-    abstract fun executeCommand(argument: String, message: IncomingMessage): ProcessResult
+    abstract fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult
 
     /**
-     * 当消息不符合命令式格式时调用.
+     * 不执行命令则会调用这个函数.
      * 默认是交给下一个service执行.
+     * @param message 原始消息
      * */
-    open fun onNotACommand(message: IncomingMessage): ProcessResult {
+    open fun onNotExecute(message: IncomingMessage): ProcessResult {
         return ProcessResult.next()
     }
 
@@ -56,14 +65,50 @@ abstract class CommandProcessService : MessageProcessService() {
      * 不要再覆盖这个方法.
      * */
     override fun process(message: IncomingMessage): ProcessResult {
-        val split = message.content.split(" ")
-        if (split.size == 2) {
-            return onNotACommand(message)
+        var content = message.content.trim()
+
+        /**
+         * 是否是明确的调用(呼叫).
+         * 以"bot"开头, 或者是在网页端直接喊, 都算.
+         * 例如QQ群里: "bot help".
+         * 网页里: "help".
+         * */
+        var isExplicitCall = false
+
+        if (message.messageFrom == MessageFrom.WEB) {
+            isExplicitCall = true
+        } else {
+            if (content.startsWith("bot ")) {
+                isExplicitCall = true
+                //去掉前面"bot "的部分
+                content = content.substring(4)
+            }
         }
-        if (shouldExecute(split[0])) {
-            return executeCommand(split[1], message)
+        if (content.isBlank()) {
+            //只剩空白
+            return onNotExecute(message)
         }
-        return ProcessResult.next()
+
+        //解析命令和参数
+        val indexOfSpace = content.indexOf(" ")
+
+        val isArgumentEmpty: Boolean = indexOfSpace == -1
+
+        val command: String
+        val arguments: String
+        if (isArgumentEmpty) {
+            command = content
+            arguments = ""
+        } else {
+            command = content.substring(0, indexOfSpace)
+            arguments = content.substring(indexOfSpace + 1)
+        }
+
+        if (shouldExecute(command, isExplicitCall, isArgumentEmpty)) {
+            return executeCommand(arguments, isExplicitCall, message)
+        }
+
+        return onNotExecute(message)
     }
 }
 

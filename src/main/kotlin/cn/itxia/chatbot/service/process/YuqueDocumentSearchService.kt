@@ -24,11 +24,11 @@ class YuqueDocumentSearchService : CommandProcessService() {
 
     private val client = OkHttpClient()
 
-    override fun shouldExecute(commandName: String): Boolean {
-        return commandKeyWords.contains(commandName)
+    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
+        return !isArgumentEmpty && commandKeyWords.contains(commandName)
     }
 
-    override fun executeCommand(argument: String, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
         val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${argument.escapeHTML()}"
 
         val request = Request.Builder()

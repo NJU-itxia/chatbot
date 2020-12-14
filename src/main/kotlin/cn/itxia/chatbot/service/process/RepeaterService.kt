@@ -16,11 +16,11 @@ class RepeaterService : CommandProcessService() {
 
     private val commandKeyWords = listOf("复读", "复读机")
 
-    override fun shouldExecute(commandName: String): Boolean {
-        return commandKeyWords.contains(commandName)
+    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
+        return !isArgumentEmpty && commandKeyWords.contains(commandName)
     }
 
-    override fun executeCommand(argument: String, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
         val content = when (argument) {
             "on" -> {
                 isRepeaterEnable = true
@@ -40,7 +40,7 @@ class RepeaterService : CommandProcessService() {
         )
     }
 
-    override fun onNotACommand(message: IncomingMessage): ProcessResult {
+    override fun onNotExecute(message: IncomingMessage): ProcessResult {
         if (isRepeaterEnable) {
             //直接复读
             return ProcessResult.reply(
@@ -51,6 +51,6 @@ class RepeaterService : CommandProcessService() {
             )
         }
 
-        return super.onNotACommand(message)
+        return super.onNotExecute(message)
     }
 }
