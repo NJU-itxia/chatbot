@@ -1,7 +1,8 @@
 package cn.itxia.chatbot.service
 
-import cn.itxia.chatbot.enum.MessageFrom
-import cn.itxia.chatbot.util.IncomingMessage
+import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
+import cn.itxia.chatbot.message.response.ImageResponseMessage
+import cn.itxia.chatbot.message.response.TextResponseMessage
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.subscribeAlways
 import net.mamoe.mirai.join
@@ -25,7 +26,7 @@ class MiraiQQRobotService {
     private var isEnable: Boolean = false
 
     @Value("\${itxia.bot.mirai.qqID}")
-    private var qqID: Long = 0;
+    private var qqID: Long = 0
 
     @Value("\${itxia.bot.mirai.qqPassword}")
     private lateinit var qqPassword: String
@@ -66,22 +67,28 @@ class MiraiQQRobotService {
              * 仅当是监听的QQ群时，才处理消息.
              * */
             if (listenGroupList.contains(qqGroupID)) {
-                val (shouldResponse, content, shouldQuoteReply) = replyService.replyMessage(
-                    IncomingMessage(
-                        senderID = qqGroupID,
-                        messageFrom = MessageFrom.QQ_GROUP_CHAT,
+                val responseList = replyService.replyMessage(
+                    QQGroupIncomingMessage(
                         content = lastMessage.contentToString(),
-                        qqGroupMessageEvent = event
+                        event = event
                     )
                 )
-                if (shouldResponse) {
-                    if (shouldQuoteReply) {
-                        quoteReply(content)
-                    } else {
-                        reply(content)
+                responseList.forEach {
+                    it.apply {
+                        if (it is TextResponseMessage) {
+                            if (shouldQuoteReply) {
+                                quoteReply(it.content)
+                            } else {
+                                reply(it.content)
+                            }
+                        } else if (it is ImageResponseMessage) {
+                            sendImage(it.image)
+                        }
                     }
                 }
+
             }
+
 
         }
 

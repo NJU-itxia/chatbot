@@ -4,7 +4,7 @@ import java.util.*
 
 data class ChatResponseVo(
 
-    val content: String,
+    val contentList: List<String>,
 
     val date: Date
 

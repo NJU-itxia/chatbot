@@ -1,7 +1,7 @@
 package cn.itxia.chatbot.service.process
 
-import cn.itxia.chatbot.util.IncomingMessage
-import cn.itxia.chatbot.util.ResponseMessage
+import cn.itxia.chatbot.message.incoming.IncomingMessage
+import cn.itxia.chatbot.message.response.TextResponseMessage
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -21,11 +21,11 @@ class YuqueDocumentSearchService : MessageProcessService {
 
     private val client = OkHttpClient()
 
-    override fun process(incomingMessage: IncomingMessage): IntermediaMessage {
+    override fun process(message: IncomingMessage): ProcessResult {
 
-        val split = incomingMessage.content.split(" ")
+        val split = message.content.split(" ")
         if (split.size != 2) {
-            return IntermediaMessage()
+            return ProcessResult.next()
         }
 
         val (command, keyword) = split
@@ -51,7 +51,7 @@ class YuqueDocumentSearchService : MessageProcessService {
 
                     val resultCount = result.meta.total
 
-                    val message = if (resultCount > 0) {
+                    val responseMessage = if (resultCount > 0) {
                         val data = result.data[0]
                         """
                         ${data.summary.substring(0, 40)}...,
@@ -64,10 +64,9 @@ class YuqueDocumentSearchService : MessageProcessService {
 
 
                     //回复消息
-                    return IntermediaMessage(
-                        responseMessage = ResponseMessage(
-                            shouldResponse = true,
-                            content = message,
+                    return ProcessResult.reply(
+                        TextResponseMessage(
+                            content = responseMessage,
                             shouldQuoteReply = true
                         )
                     )
@@ -80,7 +79,7 @@ class YuqueDocumentSearchService : MessageProcessService {
 
         }
 
-        return IntermediaMessage()
+        return ProcessResult.next()
     }
 
 

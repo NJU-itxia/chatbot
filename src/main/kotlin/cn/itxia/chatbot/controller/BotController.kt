@@ -1,9 +1,8 @@
 package cn.itxia.chatbot.controller
 
 import cn.itxia.chatbot.dto.ChatMessageDto
-import cn.itxia.chatbot.enum.MessageFrom
+import cn.itxia.chatbot.message.incoming.WebIncomingMessage
 import cn.itxia.chatbot.service.ReplyService
-import cn.itxia.chatbot.util.IncomingMessage
 import cn.itxia.chatbot.vo.ChatResponseVo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
@@ -25,15 +24,14 @@ class BotController {
         val id = ""
 
         val response = replyService.replyMessage(
-            IncomingMessage(
-                senderID = id,
-                messageFrom = MessageFrom.WEB,
+            WebIncomingMessage(
                 content = dto.content,
+                trackID = id
             )
         )
 
         return ChatResponseVo(
-            content = response.content,
+            contentList = response.map { it.toTextMessage() },
             date = Date()
         )
     }

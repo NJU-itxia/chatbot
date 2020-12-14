@@ -1,7 +1,7 @@
 package cn.itxia.chatbot.service.process
 
-import cn.itxia.chatbot.util.IncomingMessage
-import cn.itxia.chatbot.util.ResponseMessage
+import cn.itxia.chatbot.message.incoming.IncomingMessage
+import cn.itxia.chatbot.message.response.TextResponseMessage
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,9 +14,9 @@ class RepeaterService : MessageProcessService {
 
     private val commandKeyWords = listOf("复读", "复读机")
 
-    override fun process(incomingMessage: IncomingMessage): IntermediaMessage {
+    override fun process(message: IncomingMessage): ProcessResult {
 
-        val split = incomingMessage.content.split(" ")
+        val split = message.content.split(" ")
         if (split.size == 2) {
             val (command, arg) = split
             if (commandKeyWords.contains(command)) {
@@ -32,9 +32,8 @@ class RepeaterService : MessageProcessService {
                     }
                     else -> "命令无效，请输入on/off."
                 }
-                return IntermediaMessage(
-                    responseMessage = ResponseMessage(
-                        shouldResponse = true,
+                return ProcessResult.reply(
+                    TextResponseMessage(
                         shouldQuoteReply = true,
                         content = content
                     )
@@ -43,19 +42,16 @@ class RepeaterService : MessageProcessService {
         }
         if (isEnable) {
             //直接复读
-            return IntermediaMessage(
-                responseMessage = ResponseMessage(
-                    shouldResponse = true,
+            return ProcessResult.reply(
+                TextResponseMessage(
                     shouldQuoteReply = false,
-                    content = incomingMessage.content
+                    content = message.content
                 )
             )
         }
 
         //交给下一个service处理
-        return IntermediaMessage(
-            shouldContinueProcess = true
-        )
+        return ProcessResult.next()
     }
 
 
