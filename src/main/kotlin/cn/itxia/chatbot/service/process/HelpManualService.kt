@@ -22,14 +22,28 @@ class HelpManualService : CommandProcessService() {
             buildDescription(CommandWords.YUQUE_SEARCH, "[关键字]", "语雀文档搜索"),
             buildDescription(CommandWords.REPEATER, "[on/off]", "复读机"),
             buildDescription(CommandWords.HELP_MANUAL, "[命令名称]", "查询命令用法"),
+            buildDescription(CommandWords.WEBSITE_LINKS, "", "常用网址目录"),
         ).joinToString("\n")
     }
 
     private val yuqueHelp = """
         搜索IT侠语雀文档.
         格式: doc [关键字]
-        例如: doc p.nju
+        例如: doc 正版office
         alias: ${CommandWords.YUQUE_SEARCH.joinToString(",")}
+    """.trimIndent()
+
+    private val linksHelp = """
+        常用网址目录.
+        格式: bot links
+        alias: ${CommandWords.WEBSITE_LINKS.joinToString(",")}
+    """.trimIndent()
+
+    private val helpHelp = """
+        查询命令用法.
+        格式: bot help [命令]
+        例如: bot help doc
+        alias: ${CommandWords.HELP_MANUAL.joinToString(",")}
     """.trimIndent()
 
     override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
@@ -40,8 +54,14 @@ class HelpManualService : CommandProcessService() {
             CommandWords.YUQUE_SEARCH.contains(argument) -> {
                 ProcessResult.reply(yuqueHelp)
             }
+            CommandWords.WEBSITE_LINKS.contains(argument) -> {
+                ProcessResult.reply(linksHelp)
+            }
+            CommandWords.HELP_MANUAL.contains(argument) -> {
+                ProcessResult.reply(helpHelp)
+            }
             else -> {
-                ProcessResult.next()
+                ProcessResult.reply("唔...还没学会这个技能")
             }
         }
     }

@@ -10,6 +10,7 @@ class CommandWords {
 
         val HELP_MANUAL = listOf("help")
 
+        val WEBSITE_LINKS = listOf("links", "link", "常用网站", "常用网址", "常用链接")
     }
 
 }
