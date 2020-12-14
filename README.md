@@ -76,3 +76,6 @@ POST http://localhost:8080/chat
     "content": "hello"
 }
 ```
+
+## How to contribute
+请参阅[CONTRIBUTING](CONTRIBUTING.md)文档.
