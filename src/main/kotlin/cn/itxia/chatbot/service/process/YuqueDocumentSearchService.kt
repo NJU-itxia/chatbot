@@ -51,12 +51,15 @@ class YuqueDocumentSearchService : CommandProcessService() {
                 val resultCount = result.meta.total
 
                 val responseMessage = if (resultCount > 0) {
-                    val data = result.data[0]
-                    """
-                        ${data.summary.replace(Regex("\\<\\/?\\w+\\>"),"").substring(0, 40)}...,
-                        文档链接:https://yuque.com${data.url} ,
-                        (共找到${resultCount}个结果)
+                    //返回前三个结果
+                    val maxLength = if (result.data.size >= 3) 3 else result.data.size
+                    result.data.subList(0, maxLength)
+                        .joinToString("\n------------\n") { dataItem ->
+                            """
+                        ${dataItem.summary.replace(Regex("\\<\\/?\\w+\\>"), "").substring(0, 45)}...,
+                        链接:https://yuque.com${dataItem.url}
                         """.trimIndent()
+                        } + "\n------------\n(共找到${resultCount}个结果)"
                 } else {
                     "什么都没找到😢"
                 }
