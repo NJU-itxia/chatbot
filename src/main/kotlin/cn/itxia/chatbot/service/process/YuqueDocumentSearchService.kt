@@ -52,7 +52,7 @@ class YuqueDocumentSearchService : CommandProcessService() {
 
                 val responseMessage = if (resultCount > 0) {
                     //返回前三个结果
-                    val maxLength = if (result.data.size >= 3) 3 else result.data.size
+                    val maxLength = result.data.size.coerceAtMost(3)
                     result.data.subList(0, maxLength)
                         .joinToString("\n------------\n") { dataItem ->
                             """
