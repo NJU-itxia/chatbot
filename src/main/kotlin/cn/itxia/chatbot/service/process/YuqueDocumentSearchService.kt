@@ -53,7 +53,7 @@ class YuqueDocumentSearchService : CommandProcessService() {
                 val responseMessage = if (resultCount > 0) {
                     val data = result.data[0]
                     """
-                        ${data.summary.substring(0, 40)}...,
+                        ${data.summary.replace(Regex("\\<\\/?\\w+\\>"),"").substring(0, 40)}...,
                         文档链接:https://yuque.com${data.url} ,
                         (共找到${resultCount}个结果)
                         """.trimIndent()
