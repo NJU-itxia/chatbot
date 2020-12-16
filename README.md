@@ -5,16 +5,6 @@
 
 项目当前还处于萌芽期，欢迎大家参与贡献.
 
-### 需求
-
-初步的需hua求bing大致是：
-- 群聊活跃气氛，~~卖萌~~
-- 查询语雀文档(详见语雀搜索API)
-- 和预约系统联动，提供预约单查询等等功能
-- 按预算、需求推荐电脑(不急)
-- 提供多端使用，万一QQ机器人被封杀还有其他端可用
-- anything interesting...
-
 ### 项目结构
 
 ```
@@ -42,6 +32,27 @@
 QQ机器人库暂选用[mirai](https://github.com/mamoe/mirai).
 
 
+## How to contribute
+请参阅[CONTRIBUTING](CONTRIBUTING.md)文档.
+
+## 需求
+欢迎~~画大饼~~提需求.
+
+功能需求:
+- [x] 语雀文档查询
+- [x] 常用网址服务
+- [x] help命令
+- [ ] 活跃QQ群气氛
+- [ ] 有新预约时发送提醒
+- [ ] 推机bot
+- [ ] anything interesting...
+
+技术工作:
+- [x] QQ机器人
+- [x] 提供web接口(现在还很简陋)
+- [ ] web使用WebSocket连接
+- [ ] web端UI界面
+
 ## 使用说明
 
 ### 构建和运行
@@ -58,7 +69,19 @@ QQ机器人库暂选用[mirai](https://github.com/mamoe/mirai).
 
 或运行命令构建:
 ```shell
+#build
 ./gradlew build
+#run
+cd build/libs/
+java -jar chatbot-0.0.1-SNAPSHOT.jar
+
+#some common options:
+#specify another port than 8080
+java -jar chatbot-0.0.1-SNAPSHOT.jar --server.port=${yourPort}
+#active your config file
+java -jar chatbot-0.0.1-SNAPSHOT.jar --spring.profiles.active=${profileName}
+#run with external config file
+java -jar chatbot-0.0.1-SNAPSHOT.jar --spring.config.location=${filePath}
 ```
 
 ### 使用QQ机器人
@@ -76,6 +99,3 @@ POST http://localhost:8080/chat
     "content": "hello"
 }
 ```
-
-## How to contribute
-请参阅[CONTRIBUTING](CONTRIBUTING.md)文档.
