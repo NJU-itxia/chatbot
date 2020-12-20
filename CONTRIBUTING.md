@@ -156,6 +156,13 @@ public class DiceService extends CommandProcessService {
 剩下的其实是抛骰子本身就要做的工作，接入机器人的工作本身是非常简单的.
 (甚至不需要看一眼别处的代码，无需清楚它如何工作)
 
+### 解析更多参数
+
+开头的栗子中我们还支持一次抛多个骰子，你可以尝试实现这个功能.(内训作业)
+
+提示：使用executeCommand函数的argument参数判断.
+
+
 ### Kotlin
 
 下面是Kotlin的等效代码，相比Java来说有种简洁的美，却更有表达力.
@@ -213,7 +220,8 @@ val content = when (argument) {
 }
 ```
 
-### 示例
+
+## 示例
 
 如果你还是困惑如何开发，不妨参考同一个包下的其它Service:
 
