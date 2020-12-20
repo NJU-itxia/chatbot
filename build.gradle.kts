@@ -32,7 +32,7 @@ dependencies {
 //    implementation("net.mamoe:mirai-core-qqandroid:1.3.3")
     //升级到2.0测试版
     implementation("net.mamoe:mirai-core:2.0-M1-1")
-    implementation("net.mamoe:mirai-core-api")
+//    implementation("net.mamoe:mirai-core-api")
 
     //http request lib
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
