@@ -37,6 +37,10 @@ dependencies {
     //http request lib
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
+    //apache log4j
+    implementation("org.apache.logging.log4j:log4j-api:2.14.0")
+//    implementation("org.apache.logging.log4j:log4j-api-kotlin-parent:1.0.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.14.0")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
