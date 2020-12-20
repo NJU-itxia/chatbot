@@ -64,9 +64,9 @@ abstract class CommandProcessService : MessageProcessService() {
     }
 
     /**
-     * 不要再覆盖这个方法.
+     * 处理命令.
      * */
-    override fun process(message: IncomingMessage): ProcessResult {
+    final override fun process(message: IncomingMessage): ProcessResult {
         var content = message.content.trim()
 
         /**
