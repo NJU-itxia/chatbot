@@ -20,7 +20,6 @@ class HelpManualService : CommandProcessService() {
         //add your description below
         listOf(
             buildDescription(CommandWords.YUQUE_SEARCH, "[关键字]", "语雀文档搜索"),
-            buildDescription(CommandWords.REPEATER, "[on/off]", "复读机"),
             buildDescription(CommandWords.HELP_MANUAL, "[命令名称]", "查询命令用法"),
             buildDescription(CommandWords.WEBSITE_LINKS, "", "常用网址目录"),
         ).joinToString("\n")
