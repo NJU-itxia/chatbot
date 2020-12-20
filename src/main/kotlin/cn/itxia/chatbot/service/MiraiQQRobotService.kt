@@ -3,10 +3,11 @@ package cn.itxia.chatbot.service
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
-import net.mamoe.mirai.Bot
+import net.mamoe.mirai.BotFactory
+import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.subscribeAlways
-import net.mamoe.mirai.join
-import net.mamoe.mirai.message.GroupMessageEvent
+import net.mamoe.mirai.newBot
+import net.mamoe.mirai.utils.BotConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -44,7 +45,10 @@ class MiraiQQRobotService {
     }
 
     private suspend fun start() {
-        val bot = Bot(qqID, qqPassword) { randomDeviceInfo() }
+        val bot = BotFactory.newBot(qqID, qqPassword, fun BotConfiguration.() {
+            fileBasedDeviceInfo("device.json")
+            protocol = BotConfiguration.MiraiProtocol.ANDROID_PHONE
+        })
 
         //登录
         bot.login()

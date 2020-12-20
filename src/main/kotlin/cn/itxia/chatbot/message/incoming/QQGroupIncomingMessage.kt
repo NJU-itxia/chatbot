@@ -1,7 +1,7 @@
 package cn.itxia.chatbot.message.incoming
 
 import cn.itxia.chatbot.enum.MessageFrom
-import net.mamoe.mirai.message.GroupMessageEvent
+import net.mamoe.mirai.event.events.GroupMessageEvent
 
 data class QQGroupIncomingMessage(
     override val content: String,

@@ -12,23 +12,27 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-    maven {
-        url = uri("https://maven.aliyun.com/nexus/content/repositories/jcenter")
-    }
-    maven {
-        url = uri("https://maven.aliyun.com/repository/public/")
-    }
-    maven {
-        url = uri("https://maven.aliyun.com/repository/spring/")
-    }
+    //下载依赖慢的话用下面的国内源，但不一定有mirai最新的包，也许会build fail
+//    maven {
+//        url = uri("https://maven.aliyun.com/nexus/content/repositories/jcenter")
+//    }
+//    maven {
+//        url = uri("https://maven.aliyun.com/repository/public/")
+//    }
+//    maven {
+//        url = uri("https://maven.aliyun.com/repository/spring/")
+//    }
     mavenCentral()
     jcenter()
 }
 
 dependencies {
     //mirai qq bot library
-    implementation("net.mamoe:mirai-core:1.3.3")
-    implementation("net.mamoe:mirai-core-qqandroid:1.3.3")
+//    implementation("net.mamoe:mirai-core:1.3.3")
+//    implementation("net.mamoe:mirai-core-qqandroid:1.3.3")
+    //升级到2.0测试版
+    implementation("net.mamoe:mirai-core:2.0-M1-1")
+    implementation("net.mamoe:mirai-core-api")
 
     //http request lib
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
