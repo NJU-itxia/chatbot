@@ -44,7 +44,7 @@ class MiraiQQRobotService {
     }
 
     private suspend fun start() {
-        val bot = Bot(qqID, qqPassword)
+        val bot = Bot(qqID, qqPassword) { randomDeviceInfo() }
 
         //登录
         bot.login()
