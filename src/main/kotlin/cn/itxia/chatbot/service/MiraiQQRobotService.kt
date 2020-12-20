@@ -3,6 +3,7 @@ package cn.itxia.chatbot.service
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
+import cn.itxia.chatbot.util.getLogger
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.subscribeAlways
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service
 
 /**
  * @author zhenxi
- *
  * 调用Mirai QQ机器人
  * */
 @Service
@@ -39,8 +39,11 @@ class MiraiQQRobotService {
 
     private var isRunning = false
 
+    private val logger = getLogger()
+
     suspend fun startMiraiBot() {
         if (isEnable && !isRunning) {
+            logger.info("正在启动QQ机器人...")
             start()
         }
     }
@@ -55,7 +58,7 @@ class MiraiQQRobotService {
         bot.login()
 
         if (bot.isOnline) {
-            print("QQ机器人已启动")
+            logger.info("QQ机器人已上线.")
         }
 
         val listenGroupList = groupsToListen.split(",")
@@ -97,10 +100,7 @@ class MiraiQQRobotService {
                         }
                     }
                 }
-
             }
-
-
         }
 
         //挂起bot协程

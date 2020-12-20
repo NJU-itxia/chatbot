@@ -1,8 +1,8 @@
 package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.incoming.IncomingMessage
-import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.util.CommandWords
+import cn.itxia.chatbot.util.getLogger
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -26,6 +26,8 @@ class YuqueDocumentSearchService : CommandProcessService() {
 
     private val client = OkHttpClient()
 
+    private val logger = getLogger()
+
     override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
         return !isArgumentEmpty && commandKeyWords.contains(commandName)
     }
@@ -35,6 +37,8 @@ class YuqueDocumentSearchService : CommandProcessService() {
 
         val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${escapedKeyword}"
 
+        logger.info("查询语雀文档，关键字:($argument)")
+
         val request = Request.Builder()
             .url(url)
             .get()
@@ -43,8 +47,7 @@ class YuqueDocumentSearchService : CommandProcessService() {
 
         client.newCall(request).execute().use {
             if (!it.isSuccessful) {
-                //TODO log this error
-                print("Failed to search yuque doc.")
+                logger.error("查询语雀文档失败, status code:${it.code}")
             }
             try {
                 val body = it.body!!.string()
@@ -66,17 +69,15 @@ class YuqueDocumentSearchService : CommandProcessService() {
                 } else {
                     "什么都没找到😢"
                 }
+                logger.info("查询语雀文档找到${resultCount}个结果.")
 
                 //回复消息
                 return ProcessResult.reply(
-                    TextResponseMessage(
-                        content = responseMessage,
-                        shouldQuoteReply = true
-                    )
+                    textResponse = responseMessage,
+                    quoteReply = true
                 )
             } catch (e: Exception) {
-                //TODO log this
-                e.printStackTrace()
+                logger.error("查询语雀文档失败, ${e.message}")
                 return ProcessResult.stop()
             }
         }
