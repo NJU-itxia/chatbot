@@ -12,6 +12,8 @@ class RepeaterService : CommandProcessService() {
 
     override val order: Int = 64
 
+    override val isEnable: Boolean = false
+
     private var isRepeaterEnable = false
 
     private val commandKeyWords = CommandWords.REPEATER

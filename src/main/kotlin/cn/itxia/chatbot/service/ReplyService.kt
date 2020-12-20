@@ -46,7 +46,7 @@ private class ProcessServiceAutoRegister : BeanPostProcessor {
 
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
         //MessageProcessService初始化时,注册到replyService
-        if (bean is MessageProcessService) {
+        if (bean is MessageProcessService && bean.isEnable) {
             replyService.registerMessageProcessService(bean)
         }
         return super.postProcessAfterInitialization(bean, beanName)
