@@ -23,6 +23,8 @@
 
 (为方便没学过Kotlin的同学，这里以**Java**语言为例. 后面会给出Kotlin的等价代码)
 
+(你也可以参考 [这个](https://learnxinyminutes.com/docs/zh-cn/kotlin-cn/) Kotlin快速入门)
+
 ### 继承处理消息的接口
 
 首先，你需要在service.process包下面新建一个类，建议以XxxService命名.
