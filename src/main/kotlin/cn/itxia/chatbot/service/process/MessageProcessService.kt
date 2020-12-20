@@ -2,6 +2,7 @@ package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.enum.MessageFrom
 import cn.itxia.chatbot.message.incoming.IncomingMessage
+import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 
@@ -71,10 +72,14 @@ abstract class CommandProcessService : MessageProcessService() {
         /**
          * 是否是明确的调用(呼叫).
          * 以"bot"开头, 或者是在网页端直接喊, 都算.
-         * 例如QQ群里: "bot help".
+         * 例如QQ群里: "@bot help", "bot help".
          * 网页里: "help".
          * */
         var isExplicitCall = false
+
+        if (message is QQGroupIncomingMessage && message.isAtMe) {
+            isExplicitCall = true
+        }
 
         if (message.messageFrom == MessageFrom.WEB) {
             isExplicitCall = true

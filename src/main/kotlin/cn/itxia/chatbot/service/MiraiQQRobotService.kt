@@ -6,6 +6,8 @@ import cn.itxia.chatbot.message.response.TextResponseMessage
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.event.subscribeAlways
+import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.newBot
 import net.mamoe.mirai.utils.BotConfiguration
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,7 +39,6 @@ class MiraiQQRobotService {
 
     private var isRunning = false
 
-
     suspend fun startMiraiBot() {
         if (isEnable && !isRunning) {
             start()
@@ -64,8 +65,13 @@ class MiraiQQRobotService {
 
             val qqGroupID = event.group.id.toString()
 
-            //最近的一条消息
-            val lastMessage = event.message[event.message.size - 1]
+            //在@机器人
+            val isAtMe = event.message.any {
+                it is At && it.target == qqID
+            }
+
+            //读取纯文本，忽略mirai码
+            val plainTextContent = event.message.filterIsInstance<PlainText>().joinToString { it.contentToString() }
 
             /**
              * 仅当是监听的QQ群时，才处理消息.
@@ -73,8 +79,9 @@ class MiraiQQRobotService {
             if (listenGroupList.contains(qqGroupID)) {
                 val responseList = replyService.replyMessage(
                     QQGroupIncomingMessage(
-                        content = lastMessage.contentToString(),
-                        event = event
+                        content = plainTextContent,
+                        event = event,
+                        isAtMe = isAtMe
                     )
                 )
                 responseList.forEach {
