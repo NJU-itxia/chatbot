@@ -126,34 +126,16 @@ public class DiceService extends CommandProcessService {
     @NotNull
     @Override
     public ProcessResult executeCommand(@NotNull String argument, boolean isExplicitCall, @NotNull IncomingMessage message) {
-        if (argument.equals("")) {
-            //抛一次
-            int result = onceDice();
-            String content;
-            if (result < 5) {
-                content = "唔...这次抛了" + result + "点";
-            } else {
-                content = "手气不错," + result + "点";
-            }
-            //返回消息
-            return ProcessResult.Companion.reply(content, true, false);
+        //抛一次
+        int result = onceDice();
+        String content;
+        if (result < 5) {
+            content = "唔...这次抛了" + result + "点";
         } else {
-            int count = Integer.parseInt(argument);
-            int sum = 0;
-            //TODO 抛多次
-
-            //回复多个消息
-            return ProcessResult.Companion.reply(
-                    new TextResponseMessage(
-                            "让我来抛" + count + "次",
-                            true
-                    ),
-                    new TextResponseMessage(
-                            "一共" + sum + "点",
-                            true
-                    )
-            );
+            content = "手气不错," + result + "点";
         }
+        //返回消息
+        return ProcessResult.Companion.reply(content, true, false);
     }
 }
 ```
@@ -183,7 +165,6 @@ package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
-import cn.itxia.chatbot.service.process.ProcessResult.Companion.reply
 import org.springframework.stereotype.Service
 import kotlin.math.floor
 
@@ -199,33 +180,17 @@ class DiceService : CommandProcessService() {
     }
 
     override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
-        if (argument == "") {
-            //抛一次
-            //Kotlin自动类型推导，result自动获得了Int类型
-            val result = onceDice()
-            val content = if (result < 5) {
-                "唔...这次抛了" + result + "点"
-            } else {
-                "手气不错," + result + "点"
-            }
-            //相当于ProcessResult.reply(content)
-            //注意到返回类型是ProcessResult，在kotlin里可以自动判断，因此直接reply()就可以了
-            return reply(content)
+        //抛一次
+        //Kotlin自动类型推导，result自动获得了Int类型
+        val result = onceDice()
+        
+        val content = if (result < 5) {
+            "唔...这次抛了" + result + "点"
         } else {
-            val count = argument.toInt()
-            val sum = 0
-            //TODO 抛多次
-            return reply(
-                TextResponseMessage(
-                    "让我来抛" + count + "次",
-                    true
-                ),
-                TextResponseMessage(
-                    "一共" + sum + "点",
-                    true
-                )
-            )
+            "手气不错," + result + "点"
         }
+        
+        return ProcessResult.reply(content)
     }
 }
 ```
