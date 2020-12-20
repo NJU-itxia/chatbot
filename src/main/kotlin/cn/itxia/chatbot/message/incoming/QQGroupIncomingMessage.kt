@@ -5,7 +5,7 @@ import net.mamoe.mirai.event.events.GroupMessageEvent
 
 data class QQGroupIncomingMessage(
     override val content: String,
-    val isAtMe:Boolean,
+    val isAtMe: Boolean,
     val event: GroupMessageEvent,
 ) : IncomingMessage {
 

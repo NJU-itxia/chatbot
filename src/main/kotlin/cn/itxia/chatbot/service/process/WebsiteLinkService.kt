@@ -5,7 +5,7 @@ import cn.itxia.chatbot.util.CommandWords
 import org.springframework.stereotype.Service
 
 @Service
-class WebsiteLinkService:CommandProcessService() {
+class WebsiteLinkService : CommandProcessService() {
 
     override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
         return isExplicitCall && CommandWords.WEBSITE_LINKS.contains(commandName)
@@ -22,6 +22,4 @@ class WebsiteLinkService:CommandProcessService() {
             """.trimIndent()
         )
     }
-
-
 }

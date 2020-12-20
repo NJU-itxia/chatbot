@@ -1,7 +1,6 @@
 package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.incoming.IncomingMessage
-import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.util.CommandWords
 import org.springframework.stereotype.Service
 
@@ -33,22 +32,16 @@ class RepeaterService : CommandProcessService() {
             }
             else -> "命令无效，请输入on/off."
         }
-        return ProcessResult.reply(
-            TextResponseMessage(
-                shouldQuoteReply = true,
-                content = content
-            )
-        )
+        //直接复读
+        return ProcessResult.reply(content)
     }
 
     override fun onNotExecute(message: IncomingMessage): ProcessResult {
         if (isRepeaterEnable) {
             //直接复读
             return ProcessResult.reply(
-                TextResponseMessage(
-                    shouldQuoteReply = false,
-                    content = message.content
-                )
+                textResponse = message.content,
+                quoteReply = false
             )
         }
 
