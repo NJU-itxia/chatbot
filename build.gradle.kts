@@ -31,7 +31,14 @@ dependencies {
 //    implementation("net.mamoe:mirai-core:1.3.3")
 //    implementation("net.mamoe:mirai-core-qqandroid:1.3.3")
     //升级到2.0测试版
-    implementation("net.mamoe:mirai-core:2.0-M1-1")
+    implementation("net.mamoe:mirai-core-jvm:2.0-M1-1"){
+        exclude("net.mamoe","mirai-core-api")
+        exclude("net.mamoe","mirai-core-utils")
+    }
+    implementation("net.mamoe:mirai-core-api-jvm:2.0-M1-1"){
+        exclude("net.mamoe","mirai-core-utils")
+    }
+    implementation("net.mamoe:mirai-core-utils-jvm:2.0-M1-1")
 //    implementation("net.mamoe:mirai-core-api")
 
     //http request lib
