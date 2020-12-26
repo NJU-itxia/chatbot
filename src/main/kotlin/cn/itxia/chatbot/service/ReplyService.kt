@@ -26,9 +26,7 @@ class ReplyService {
      * @param reply 回复的回调
      * */
     fun replyMessage(incomingMessage: IncomingMessage, reply: (ResponseMessage) -> Unit) {
-
         for (messageProcessService in messageProcessServiceList) {
-
             //交给service处理消息
             val result = messageProcessService.process(incomingMessage)
 
@@ -39,9 +37,7 @@ class ReplyService {
             if (!result.shouldContinueProcess) {
                 break
             }
-
         }
-
     }
 
 
@@ -52,8 +48,6 @@ class ReplyService {
      * @return 回复消息的list
      * */
     fun replyMessage(incomingMessage: IncomingMessage): List<ResponseMessage> {
-
-
         val responseMessageList: MutableList<ResponseMessage> = mutableListOf()
 
         val collectToList: (ResponseMessage) -> Unit = fun(responseMessage: ResponseMessage) {
@@ -64,6 +58,7 @@ class ReplyService {
 
         return responseMessageList
     }
+
 
     fun registerMessageProcessService(messageProcessService: MessageProcessService) {
         messageProcessServiceList.add(messageProcessService)
