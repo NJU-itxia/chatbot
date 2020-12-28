@@ -9,13 +9,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
+import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.subscribeAlways
 import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.PlainText
-import net.mamoe.mirai.newBot
 import net.mamoe.mirai.utils.BotConfiguration
-import net.mamoe.mirai.utils.sendImage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -90,7 +89,7 @@ class MiraiQQRobotService {
      * 发送到QQ群.
      * */
     fun sendToGroup(groupID: Long, vararg messages: ResponseMessage) {
-        val group = bot?.getGroup(groupID) ?: return logger.error("找不到QQ群$groupID.")
+        val group = bot!!.getGroup(groupID) ?: return logger.error("找不到QQ群$groupID.")
         messages.forEach {
             GlobalScope.launch {
                 when (it) {
@@ -115,12 +114,10 @@ class MiraiQQRobotService {
     private fun subscribeGroupMessage() {
         val listenGroupList = groupsToListen.split(",")
         //监听群消息
-        bot?.subscribeAlways<GroupMessageEvent> { event ->
+        bot!!.eventChannel.subscribeAlways<GroupMessageEvent> { event ->
             val qqGroupID = event.group.id.toString()
 
-            /**
-             * 仅当是监听的QQ群时，才处理消息.
-             * */
+            //仅当是监听的QQ群时，才处理消息.
             if (listenGroupList.contains(qqGroupID)) {
 
                 //在@机器人
@@ -145,13 +142,13 @@ class MiraiQQRobotService {
                             when (it) {
                                 is TextResponseMessage -> {
                                     if (it.shouldQuoteReply) {
-                                        quoteReply(it.content)
+                                        subject.sendMessage(message.quote() + it.content)
                                     } else {
-                                        reply(it.content)
+                                        subject.sendMessage(it.content)
                                     }
                                 }
                                 is ImageResponseMessage -> {
-                                    sendImage(it.image)
+                                    subject.sendImage(it.image)
                                 }
                                 else -> {
                                     logger.warn("未支持的返回消息类型.")
