@@ -2,6 +2,7 @@ package cn.itxia.chatbot.service
 
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
+import cn.itxia.chatbot.message.response.QQResponseMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.util.getLogger
@@ -14,6 +15,7 @@ import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.message.data.sendTo
 import net.mamoe.mirai.utils.BotConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -89,24 +91,35 @@ class MiraiQQRobotService {
      * 发送到QQ群.
      * */
     fun sendToGroup(groupID: Long, vararg messages: ResponseMessage) {
-        val group = bot!!.getGroup(groupID) ?: return logger.error("找不到QQ群$groupID.")
-        messages.forEach {
-            GlobalScope.launch {
-                when (it) {
-                    is TextResponseMessage -> {
-                        group.sendMessage(it.content)
-                    }
-                    is ImageResponseMessage -> {
-                        group.sendImage(it.image)
-                    }
-                    else -> {
-                        logger.warn("未支持的消息类型.")
+        sendToGroups(listOf(groupID), *messages)
+    }
+
+    /**
+     * 发送到QQ群.
+     * */
+    fun sendToGroups(groupIDList: List<Long>, vararg messages: ResponseMessage) {
+        groupIDList.mapNotNull { bot!!.getGroup(it) }.forEach { group ->
+            messages.forEach { message ->
+                GlobalScope.launch {
+                    when (message) {
+                        is TextResponseMessage -> {
+                            group.sendMessage(message.toTextMessage())
+                        }
+                        is QQResponseMessage -> {
+                            message.toMessageChain().sendTo(group)
+                        }
+                        is ImageResponseMessage -> {
+                            group.sendImage(message.image)
+                        }
+                        else -> {
+                            logger.warn("未支持的消息类型.")
+                        }
                     }
                 }
             }
         }
-    }
 
+    }
 
     /**
      * 监听群消息.
@@ -146,6 +159,9 @@ class MiraiQQRobotService {
                                     } else {
                                         subject.sendMessage(it.content)
                                     }
+                                }
+                                is QQResponseMessage -> {
+                                    it.toMessageChain().sendTo(group)
                                 }
                                 is ImageResponseMessage -> {
                                     subject.sendImage(it.image)
