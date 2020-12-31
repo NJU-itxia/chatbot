@@ -140,7 +140,7 @@ class MiraiQQRobotService {
 
                 //读取纯文本，忽略mirai码
                 val plainTextContent =
-                    event.message.filterIsInstance<PlainText>().joinToString { it.contentToString() }
+                    event.message.filterIsInstance<PlainText>().joinToString(separator = "") { it.contentToString() }
 
 
                 val incomingMessage = QQGroupIncomingMessage(
