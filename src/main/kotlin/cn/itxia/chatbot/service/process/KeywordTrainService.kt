@@ -63,7 +63,7 @@ private class Learn : CommandProcessService() {
                 val image = images[0]
                 GlobalScope.launch {
                     val imageUrl = image.queryUrl()
-                    logger.info("图片URL:$imageUrl。")
+                    logger.info("图片URL:$imageUrl.")
 
                     val request = Request.Builder()
                         .url(imageUrl)
@@ -73,7 +73,7 @@ private class Learn : CommandProcessService() {
                             val bytes = body?.bytes()
                             if (bytes != null) {
                                 val fileName = image.imageId.replace(Regex("^\\w"), "")
-                                logger.info("写入文件:$fileName。")
+                                logger.info("写入文件:$fileName.")
 
                                 val imageFile = StorageUtil.implementImageFile(fileName)
                                 imageFile.writeBytes(bytes)

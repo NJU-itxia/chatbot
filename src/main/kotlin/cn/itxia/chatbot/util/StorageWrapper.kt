@@ -24,10 +24,7 @@ class StorageWrapper<T>(fileName: String, reference: TypeReference<MutableList<T
             file.createNewFile()
             file.writeText("[]")
         }
-        val valueTypeRef = object : TypeReference<MutableList<T>>() {}
         list = mapper.readValue(file, reference)
-
-        val aaa = mapper.readValue(file, valueTypeRef)
     }
 
     private fun saveToJsonFile() {

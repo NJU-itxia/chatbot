@@ -3,7 +3,6 @@ package cn.itxia.chatbot.service.process
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.service.process.ProcessResult.Companion.reply
-import org.springframework.stereotype.Service
 import kotlin.math.floor
 
 /**
