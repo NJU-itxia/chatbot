@@ -13,7 +13,7 @@ class StorageWrapper<T>(fileName: String, reference: TypeReference<MutableList<T
 
     private val list: MutableList<T>
 
-    private var file: File = File(fileName)
+    private var file: File = StorageUtil.implementJsonFile(fileName)
 
     private val logger = getLogger()
 

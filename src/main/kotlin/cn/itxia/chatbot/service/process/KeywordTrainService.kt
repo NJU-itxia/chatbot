@@ -5,6 +5,7 @@ import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.util.CommandWords
+import cn.itxia.chatbot.util.StorageUtil
 import cn.itxia.chatbot.util.StorageWrapper
 import cn.itxia.chatbot.util.getLogger
 import com.fasterxml.jackson.core.type.TypeReference
@@ -15,7 +16,6 @@ import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.springframework.stereotype.Service
-import java.io.File
 
 private const val baseOrder = 65536
 
@@ -74,7 +74,8 @@ private class Learn : CommandProcessService() {
                             if (bytes != null) {
                                 val fileName = image.imageId.replace(Regex("^\\w"), "")
                                 logger.info("写入文件:$fileName。")
-                                val imageFile = File(fileName)
+
+                                val imageFile = StorageUtil.implementImageFile(fileName)
                                 imageFile.writeBytes(bytes)
                                 keywordList.add(
                                     KeywordItem(
@@ -155,7 +156,7 @@ private class ReplyKeyword : MessageProcessService() {
             if (it.responseText != null) {
                 TextResponseMessage(it.responseText)
             } else if (it.imageFileName != null) {
-                ImageResponseMessage(File(it.imageFileName))
+                ImageResponseMessage(StorageUtil.implementImageFile(it.imageFileName))
             } else {
                 null
             }
