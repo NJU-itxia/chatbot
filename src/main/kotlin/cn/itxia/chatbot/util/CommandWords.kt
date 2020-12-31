@@ -13,6 +13,11 @@ class CommandWords {
         val WEBSITE_LINKS = listOf("links", "link", "常用网站", "常用网址", "常用链接")
 
         val ALIVE_CHECK = listOf("存活确认")
+
+        val KEYWORD_LEARN = listOf("learn", "train", "学习", "调校", "调教")
+        val KEYWORD_FORGET = listOf("forget", "remove", "忘记")
+
+
     }
 
 }
