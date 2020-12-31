@@ -67,7 +67,7 @@ class YuqueDocumentSearchService : CommandProcessService() {
                         """.trimIndent()
                         } + "\n------------\n共找到${resultCount}个结果,详见\nhttps://www.yuque.com/itxia/s?q=${escapedKeyword}"
                 } else {
-                    "什么都没找到😢"
+                    "什么都没找到 ಥ_ಥ"
                 }
                 logger.info("查询语雀文档找到${resultCount}个结果.")
 
