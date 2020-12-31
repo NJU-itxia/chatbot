@@ -44,24 +44,15 @@ class StorageWrapper<T>(fileName: String, reference: TypeReference<MutableList<T
         return list.filter { predict(it) }
     }
 
-    fun getAll(): List<T> {
-        return list
-    }
-
     fun add(vararg listOfT: T) {
         listOfT.forEach { list.add(it) }
         saveToJsonFile()
     }
 
-    fun delete(predict: (T) -> Boolean): Boolean {
-        return list.removeIf(predict)
+    fun remove(predict: (T) -> Boolean): Boolean {
+        return list.removeIf(predict).also {
+            saveToJsonFile()
+        }
     }
-
-    fun delete(t: T): Boolean {
-        val isRemove = list.remove(t)
-        saveToJsonFile()
-        return isRemove
-    }
-
 
 }

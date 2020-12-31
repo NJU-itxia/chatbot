@@ -124,7 +124,7 @@ private class Forget : CommandProcessService() {
     }
 
     override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
-        val isRemove = keywordList.delete {
+        val isRemove = keywordList.remove {
             it.keyword == argument
         }
 
