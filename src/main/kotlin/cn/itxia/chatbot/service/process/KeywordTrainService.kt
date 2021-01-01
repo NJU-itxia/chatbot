@@ -4,6 +4,7 @@ import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
+import cn.itxia.chatbot.service.MemberAuthenticationService
 import cn.itxia.chatbot.util.CommandWords
 import cn.itxia.chatbot.util.StorageUtil
 import cn.itxia.chatbot.util.StorageWrapper
@@ -15,6 +16,7 @@ import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -37,6 +39,9 @@ private class Learn : CommandProcessService() {
 
     private val logger = getLogger()
 
+    @Autowired
+    private lateinit var memberAuthenticationService: MemberAuthenticationService
+
     override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
         return isExplicitCall && CommandWords.KEYWORD_LEARN.contains(commandName)
     }
@@ -46,6 +51,10 @@ private class Learn : CommandProcessService() {
             return ProcessResult.next()
         }
         val qqID = message.event.sender.id.toString()
+
+        if (!memberAuthenticationService.validateMemberQQ(qqID)) {
+            return ProcessResult.reply("请先在后台系统验证QQ号.", true)
+        }
 
         val split = argument.split(" ")
 
@@ -120,11 +129,22 @@ private class Forget : CommandProcessService() {
 
     override val order: Int = baseOrder + 2
 
+    @Autowired
+    private lateinit var memberAuthenticationService: MemberAuthenticationService
+
     override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
         return isExplicitCall && CommandWords.KEYWORD_FORGET.contains(commandName)
     }
 
     override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+        if (message !is QQGroupIncomingMessage) {
+            return ProcessResult.next()
+        }
+        val qqID = message.event.sender.id.toString()
+        if (!memberAuthenticationService.validateMemberQQ(qqID)) {
+            return ProcessResult.reply("请先在后台系统验证QQ号.", true)
+        }
+
         val isRemove = keywordList.remove {
             it.keyword == argument
         }
