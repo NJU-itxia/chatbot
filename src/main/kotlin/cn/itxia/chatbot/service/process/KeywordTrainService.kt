@@ -11,11 +11,14 @@ import cn.itxia.chatbot.util.getLogger
 import com.fasterxml.jackson.core.type.TypeReference
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import net.mamoe.mirai.contact.getMember
+import net.mamoe.mirai.message.action.Nudge.Companion.sendNudge
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.springframework.stereotype.Service
+import java.util.*
 
 private const val baseOrder = 65536
 
@@ -163,6 +166,23 @@ private class ReplyKeyword : MessageProcessService() {
         }.toTypedArray()
 
         return ProcessResult.replyAndContinue(*messages)
+    }
+
+    private val map = mutableMapOf<String, Date>()
+    private val interval = 30 * 1000
+
+    /**
+     * TODO
+     * 一段时间内只触发一次.
+     * */
+    private fun responseThrottle(keyword: String) {
+        val lastTrigger = map[keyword]
+        if (lastTrigger == null) {
+            map[keyword] = Date()
+        } else {
+            //compare time
+            val shouldTrig = Date().time - lastTrigger.time > interval
+        }
     }
 }
 
