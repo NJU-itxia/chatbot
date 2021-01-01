@@ -11,8 +11,6 @@ import cn.itxia.chatbot.util.getLogger
 import com.fasterxml.jackson.core.type.TypeReference
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import net.mamoe.mirai.contact.getMember
-import net.mamoe.mirai.message.action.Nudge.Companion.sendNudge
 import net.mamoe.mirai.message.data.Image
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import okhttp3.OkHttpClient
@@ -155,17 +153,18 @@ private class ReplyKeyword : MessageProcessService() {
             message.content.contains(it.keyword)
         }
 
-        val messages = matchItems.mapNotNull {
-            if (it.responseText != null) {
-                TextResponseMessage(it.responseText)
-            } else if (it.imageFileName != null) {
-                ImageResponseMessage(StorageUtil.implementImageFile(it.imageFileName))
-            } else {
-                null
-            }
-        }.toTypedArray()
+        //随机选择一个
+        val selectedItem = matchItems[(Math.random() * matchItems.size).toInt()]
 
-        return ProcessResult.replyAndContinue(*messages)
+        val responseMessage = selectedItem.let {
+            when (true) {
+                it.responseText != null -> TextResponseMessage(it.responseText)
+                it.imageFileName != null -> ImageResponseMessage(StorageUtil.implementImageFile(it.imageFileName))
+                else -> null
+            }
+        } ?: return ProcessResult.next()
+
+        return ProcessResult.replyAndContinue(responseMessage)
     }
 
     private val map = mutableMapOf<String, Date>()
