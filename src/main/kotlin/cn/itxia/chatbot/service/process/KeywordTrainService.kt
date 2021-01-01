@@ -164,8 +164,14 @@ private class ReplyKeyword : MessageProcessService() {
 
     override val order: Int = baseOrder + 3
 
+    private val excludeGroups = listOf<Long>(887021867, 302228512, 926053788)
+
     override fun process(message: IncomingMessage): ProcessResult {
         if (message !is QQGroupIncomingMessage) {
+            return ProcessResult.next()
+        }
+
+        if (excludeGroups.contains(message.event.group.id)) {
             return ProcessResult.next()
         }
 
