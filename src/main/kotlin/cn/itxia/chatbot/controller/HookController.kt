@@ -17,7 +17,7 @@ class HookController {
     private lateinit var miraiQQRobotService: MiraiQQRobotService
 
     //监听消息的群
-    private val xianlinGroups = listOf<Long>()
+    private val xianlinGroups = listOf<Long>(1156432117)
     private val gulouGroups = listOf<Long>()
     private val otherGroups = listOf<Long>(766616165)
 
