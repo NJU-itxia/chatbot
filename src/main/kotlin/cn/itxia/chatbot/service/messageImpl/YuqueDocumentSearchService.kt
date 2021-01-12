@@ -1,5 +1,6 @@
-package cn.itxia.chatbot.service.process
+package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.service.message.AbstractCommandProcessService
@@ -30,11 +31,13 @@ class YuqueDocumentSearchService : AbstractCommandProcessService() {
 
     private val logger = getLogger()
 
-    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
-        return !isArgumentEmpty && commandKeyWords.contains(commandName)
+    override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
+        return !command.isArgumentEmpty && commandKeyWords.contains(command.commandName)
     }
 
-    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(command: Command, message: IncomingMessage): ProcessResult {
+        val argument = command.argument
+
         val escapedKeyword = URLEncoder.encode(argument.escapeHTML(), "utf-8")
 
         val url = "https://www.yuque.com/api/v2/search?type=doc&scope=itxia&q=${escapedKeyword}"
