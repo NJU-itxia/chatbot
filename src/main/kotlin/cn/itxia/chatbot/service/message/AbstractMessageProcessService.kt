@@ -1,5 +1,6 @@
 package cn.itxia.chatbot.service.message
 
+import cn.itxia.chatbot.enum.ProcessPriority
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 
@@ -8,10 +9,13 @@ import cn.itxia.chatbot.message.incoming.IncomingMessage
  * */
 abstract class AbstractMessageProcessService {
     /**
-     * 执行的顺序, 越小越先执行.
+     * 执行的顺序.
+     *
      * 如果你对执行顺序不在意，就不要覆盖修改.
+     *
+     * @see ProcessPriority
      * */
-    open val order: Int = 100
+    open val priority: ProcessPriority = ProcessPriority.DEFAULT
 
     /**
      * 表示是否启用该Service.

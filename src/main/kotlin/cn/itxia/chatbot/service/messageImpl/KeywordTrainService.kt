@@ -1,5 +1,6 @@
 package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.enum.ProcessPriority
 import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
@@ -24,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
-private const val baseOrder = 65536
-
 private val keywordList = StorageWrapper("KeywordItem.json", object : TypeReference<MutableList<KeywordItem>>() {})
 
 private val learnResponse = listOf("知道啦~", "学会了😊", "懂了!", "好的~", "分かります~")
@@ -37,7 +36,7 @@ private fun getRandomLearnResponse(): String {
 @Service
 private class Learn : AbstractCommandProcessService() {
 
-    override val order: Int = baseOrder + 1
+    override val priority = ProcessPriority.KEYWORD_LEARN
 
     private val client = OkHttpClient()
 
@@ -131,7 +130,7 @@ private class Learn : AbstractCommandProcessService() {
 @Service
 private class Forget : AbstractCommandProcessService() {
 
-    override val order: Int = baseOrder + 2
+    override val priority = ProcessPriority.KEYWORD_FORGET
 
     @Autowired
     private lateinit var memberAuthenticationService: MemberAuthenticationService
@@ -168,7 +167,7 @@ private class Forget : AbstractCommandProcessService() {
 @Service
 private class ReplyKeyword : AbstractMessageProcessService() {
 
-    override val order: Int = baseOrder + 3
+    override val priority = ProcessPriority.KEYWORD_REPLY
 
     private val excludeGroups = listOf<Long>(887021867, 302228512, 926053788)
 

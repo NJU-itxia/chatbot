@@ -63,7 +63,7 @@ class ReplyService {
     fun registerMessageProcessService(messageProcessService: AbstractMessageProcessService) {
         messageProcessServiceList.add(messageProcessService)
         //按照优先级排序
-        messageProcessServiceList.sortBy { it.order }
+        messageProcessServiceList.sortBy { it.priority.priority }
     }
 
 }

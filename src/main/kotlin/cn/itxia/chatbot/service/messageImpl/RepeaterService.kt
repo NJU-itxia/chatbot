@@ -1,5 +1,6 @@
 package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.enum.ProcessPriority
 import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 class RepeaterService : AbstractCommandProcessService() {
 
-    override val order: Int = 64
+    override val priority = ProcessPriority.REPEATER
 
     override val isEnable: Boolean = false
 
