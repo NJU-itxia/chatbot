@@ -1,6 +1,6 @@
 package cn.itxia.chatbot.message
 
-class CommandStyleMessage private constructor(
+class Command private constructor(
     val commandName: String,
     val argument: String,
 ) {
@@ -8,7 +8,7 @@ class CommandStyleMessage private constructor(
     val isArgumentEmpty: Boolean = argument.isEmpty()
 
     companion object {
-        fun fromText(text: String): CommandStyleMessage? {
+        fun fromText(text: String): Command? {
             val command = text.trim()
             if (command.isEmpty()) {
                 return null
@@ -17,12 +17,12 @@ class CommandStyleMessage private constructor(
             val isArgumentEmpty = indexOfFirstSpace == -1
 
             return if (isArgumentEmpty) {
-                CommandStyleMessage(
+                Command(
                     commandName = command,
                     argument = ""
                 )
             } else {
-                CommandStyleMessage(
+                Command(
                     commandName = command.substring(0, indexOfFirstSpace),
                     argument = command.substring(indexOfFirstSpace + 1)
                 )

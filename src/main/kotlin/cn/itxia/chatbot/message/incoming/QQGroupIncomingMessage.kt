@@ -1,7 +1,7 @@
 package cn.itxia.chatbot.message.incoming
 
 import cn.itxia.chatbot.enum.MessageFrom
-import cn.itxia.chatbot.message.CommandStyleMessage
+import cn.itxia.chatbot.message.Command
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.PlainText
@@ -39,11 +39,11 @@ data class QQGroupIncomingMessage(
 
     override val isExplicitCall: Boolean = isAtMe || isStartWithBot
 
-    override val commandStyle: CommandStyleMessage? =
+    override val commandStyle: Command? =
         if (isStartWithBot) {
-            CommandStyleMessage.fromText(content.removePrefix("bot "))
+            Command.fromText(content.removePrefix("bot "))
         } else {
-            CommandStyleMessage.fromText(content)
+            Command.fromText(content)
         }
 
     /**

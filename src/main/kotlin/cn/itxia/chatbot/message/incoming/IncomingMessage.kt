@@ -1,7 +1,7 @@
 package cn.itxia.chatbot.message.incoming
 
 import cn.itxia.chatbot.enum.MessageFrom
-import cn.itxia.chatbot.message.CommandStyleMessage
+import cn.itxia.chatbot.message.Command
 
 /**
  * 所有类型消息的抽象接口.
@@ -40,7 +40,7 @@ interface IncomingMessage {
      *
      * 如收到消息"bot doc 正版", 将转换为指令"doc"和参数"正版".
      * */
-    val commandStyle: CommandStyleMessage?
+    val commandStyle: Command?
 }
 
 

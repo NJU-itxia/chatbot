@@ -1,8 +1,11 @@
 package cn.itxia.chatbot.message.incoming
 
 import cn.itxia.chatbot.enum.MessageFrom
-import cn.itxia.chatbot.message.CommandStyleMessage
+import cn.itxia.chatbot.message.Command
 
+/**
+ * 来自网页端的消息.
+ * */
 data class WebIncomingMessage(
     override val content: String,
     override val trackID: String,
@@ -11,6 +14,6 @@ data class WebIncomingMessage(
 
     override val isExplicitCall: Boolean = true
 
-    override val commandStyle: CommandStyleMessage? = CommandStyleMessage.fromText(content)
+    override val commandStyle: Command? = Command.fromText(content)
 
 }
