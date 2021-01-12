@@ -204,3 +204,10 @@ class TrashMessageService : AbstractCommandProcessService() {
 另外，抽象类的接口也写有不少注释.
 
 Happy coding.
+
+## kotlin lang references
+
+如果你还不熟悉kotlin，可以参考以下资料:
+- [kotlin官方文档](https://kotlinlang.org/docs/reference/)
+- [Learn X in Y minutes - en](https://learnxinyminutes.com/docs/kotlin/)
+- [Learn X in Y minutes - 中文](https://learnxinyminutes.com/docs/zh-cn/kotlin-cn/)
