@@ -144,9 +144,7 @@ class MiraiQQRobotService {
 
 
                 val incomingMessage = QQGroupIncomingMessage(
-                    content = plainTextContent,
                     event = event,
-                    isAtMe = isAtMe
                 )
 
                 val replyCallback = fun(responseMessage: ResponseMessage) {
