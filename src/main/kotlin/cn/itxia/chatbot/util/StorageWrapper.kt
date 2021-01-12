@@ -34,7 +34,7 @@ class StorageWrapper<T>(fileName: String, reference: TypeReference<MutableList<T
     fun get(predict: (T) -> Boolean): T? {
         for (t in list) {
             if (predict(t)) {
-                return t;
+                return t
             }
         }
         return null

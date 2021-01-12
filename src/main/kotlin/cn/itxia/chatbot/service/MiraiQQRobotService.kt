@@ -12,9 +12,7 @@ import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.MessageSource.Key.quote
-import net.mamoe.mirai.message.data.PlainText
 import net.mamoe.mirai.message.data.sendTo
 import net.mamoe.mirai.utils.BotConfiguration
 import org.springframework.beans.factory.annotation.Autowired
@@ -133,21 +131,12 @@ class MiraiQQRobotService {
             //仅当是监听的QQ群时，才处理消息.
             if (listenGroupList.contains(qqGroupID)) {
 
-                //在@机器人
-                val isAtMe = event.message.any {
-                    it is At && it.target == qqID
-                }
-
-                //读取纯文本，忽略mirai码
-                val plainTextContent =
-                    event.message.filterIsInstance<PlainText>().joinToString(separator = "") { it.contentToString() }
-
-
                 val incomingMessage = QQGroupIncomingMessage(
                     event = event,
                 )
 
                 val replyCallback = fun(responseMessage: ResponseMessage) {
+
                     GlobalScope.launch {
                         responseMessage.let {
                             when (it) {

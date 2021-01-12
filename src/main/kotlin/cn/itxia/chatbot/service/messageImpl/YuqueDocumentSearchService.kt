@@ -67,7 +67,7 @@ private class YuqueDocumentSearchService : AbstractCommandProcessService() {
                     result.data.subList(0, maxLength)
                         .joinToString("\n------------\n") { dataItem ->
                             """
-                        ${dataItem.summary.replace(Regex("\\<\\/?\\w+\\>"), "").substring(0, 45)}...,
+                        ${dataItem.summary.replace(Regex("</?\\w+>"), "").substring(0, 45)}...,
                         链接:https://yuque.com${dataItem.url}
                         """.trimIndent()
                         } + "\n------------\n共找到${resultCount}个结果,详见\nhttps://www.yuque.com/itxia/s?q=${escapedKeyword}"
