@@ -8,19 +8,26 @@
 ### 项目结构
 
 ```
-── main
-    ├── kotlin
-    │   └── cn
-    │       └── itxia
-    │           └── chatbot
-    │               ├── controller  # controller层，接受HTTP请求
-    │               ├── dto         # dto，前端传来的数据
-    │               ├── enum        # enum
-    │               ├── service     # service层，执行业务逻辑
-    │               ├── util        # 公共类
-    │               └── vo          # vo，返回给前端的数据
-    └── resources
-        └── application.properties  # 配置文件
+main
+├── kotlin
+│   └── cn
+│       └── itxia
+│           └── chatbot
+│               ├── controller       # controller层，接受HTTP请求
+│               ├── dto
+│               ├── enum
+│               ├── filter
+│               ├── message
+│               │   ├── incoming     # 接收消息的类型
+│               │   └── response     # 返回消息的类型
+│               ├── service
+│               │   ├── message      # 消息处理service的抽象类
+│               │   └── messageImpl  # 消息处理service的实现
+│               ├── util             # 工具类
+│               └── vo
+└── resources
+    └── application.properties       # 配置文件
+
 ```
 
 ### 语言、框架
@@ -43,7 +50,8 @@ QQ机器人库暂选用[mirai](https://github.com/mamoe/mirai).
 - [x] 常用网址服务
 - [x] help命令
 - [ ] 活跃QQ群气氛
-- [ ] 有新预约时发送提醒
+- [x] 有新预约时发送提醒 (未启用)
+- [x] 简单的关键词学习功能
 - [ ] 推机bot
 - [ ] anything interesting...
 
@@ -59,6 +67,7 @@ QQ机器人库暂选用[mirai](https://github.com/mamoe/mirai).
 
 #### 修改配置
 先修改application.properties.
+
 如果启用QQ机器人，需要填写账号密码.(建议拿小号测试)
 
 若不用QQ机器人也可通过HTTP调用.
@@ -69,9 +78,11 @@ QQ机器人库暂选用[mirai](https://github.com/mamoe/mirai).
 
 或运行命令构建:
 ```shell
-#build
+#run directly
+./gradlew bootRun
+
+#build and run
 ./gradlew build
-#run
 cd build/libs/
 java -jar chatbot-0.0.1-SNAPSHOT.jar
 
