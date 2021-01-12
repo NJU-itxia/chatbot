@@ -1,8 +1,9 @@
 package cn.itxia.chatbot.service.process
 
+import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
-import cn.itxia.chatbot.service.process.ProcessResult.Companion.reply
+import cn.itxia.chatbot.message.ProcessResult.Companion.reply
 import kotlin.math.floor
 
 /**

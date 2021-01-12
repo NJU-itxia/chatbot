@@ -1,5 +1,6 @@
 package cn.itxia.chatbot.service.process
 
+import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
