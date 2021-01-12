@@ -2,7 +2,7 @@ package cn.itxia.chatbot.service
 
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
-import cn.itxia.chatbot.service.process.MessageProcessService
+import cn.itxia.chatbot.service.message.AbstractMessageProcessService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.stereotype.Component
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 @Service
 class ReplyService {
 
-    private val messageProcessServiceList: MutableList<MessageProcessService> = mutableListOf()
+    private val messageProcessServiceList: MutableList<AbstractMessageProcessService> = mutableListOf()
 
     /**
      * 处理发来的消息.
@@ -60,7 +60,7 @@ class ReplyService {
     }
 
 
-    fun registerMessageProcessService(messageProcessService: MessageProcessService) {
+    fun registerMessageProcessService(messageProcessService: AbstractMessageProcessService) {
         messageProcessServiceList.add(messageProcessService)
         //按照优先级排序
         messageProcessServiceList.sortBy { it.order }
@@ -76,7 +76,7 @@ private class ProcessServiceAutoRegister : BeanPostProcessor {
 
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
         //MessageProcessService初始化时,注册到replyService
-        if (bean is MessageProcessService && bean.isEnable) {
+        if (bean is AbstractMessageProcessService && bean.isEnable) {
             replyService.registerMessageProcessService(bean)
         }
         return super.postProcessAfterInitialization(bean, beanName)

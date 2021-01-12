@@ -1,4 +1,4 @@
-package cn.itxia.chatbot.service.process
+package cn.itxia.chatbot.service.message
 
 import cn.itxia.chatbot.enum.MessageFrom
 import cn.itxia.chatbot.message.ProcessResult
@@ -6,35 +6,12 @@ import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 
 /**
- * 所有处理service的基类.
- * */
-abstract class MessageProcessService {
-    /**
-     * 执行的顺序, 越小越先执行.
-     * 如果你对执行顺序不在意，就不要覆盖修改.
-     * */
-    open val order: Int = 100
-
-    /**
-     * 表示是否启用该Service.
-     * */
-    open val isEnable: Boolean = true
-
-    /**
-     * 处理消息.
-     * 请调用ProcessResult.xxx()返回处理结果.
-     * */
-    abstract fun process(message: IncomingMessage): ProcessResult
-}
-
-/**
  * 处理空格分隔命令式消息.
  * 例如消息是"doc p.nju",
  * 则会调用 executeCommand("doc", "p.nju", message).
  * 如果消息不符合命令式格式, 则会调用onNotFormatCommand, 该函数默认交给下一个service执行.
  * */
-abstract class CommandProcessService : MessageProcessService() {
-
+abstract class AbstractCommandProcessService : AbstractMessageProcessService() {
 
     /**
      * 判断命令是否应该执行.

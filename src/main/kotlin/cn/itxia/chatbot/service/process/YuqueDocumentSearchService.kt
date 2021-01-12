@@ -2,6 +2,7 @@ package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
+import cn.itxia.chatbot.service.message.AbstractCommandProcessService
 import cn.itxia.chatbot.util.CommandWords
 import cn.itxia.chatbot.util.getLogger
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
@@ -18,7 +19,7 @@ import java.net.URLEncoder
  * 搜索语雀文档.
  * */
 @Service
-class YuqueDocumentSearchService : CommandProcessService() {
+class YuqueDocumentSearchService : AbstractCommandProcessService() {
 
     @Value("\${itxia.bot.yuque.token}")
     private lateinit var yuqueApiToken: String

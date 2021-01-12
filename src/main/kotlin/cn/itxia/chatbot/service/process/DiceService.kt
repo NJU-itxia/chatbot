@@ -1,9 +1,10 @@
 package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.ProcessResult
+import cn.itxia.chatbot.message.ProcessResult.Companion.reply
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
-import cn.itxia.chatbot.message.ProcessResult.Companion.reply
+import cn.itxia.chatbot.service.message.AbstractCommandProcessService
 import kotlin.math.floor
 
 /**
@@ -11,7 +12,7 @@ import kotlin.math.floor
  * This is just a demo.
  * */
 //@Service
-class DiceService : CommandProcessService() {
+class DiceService : AbstractCommandProcessService() {
 
     override val isEnable: Boolean = false
 

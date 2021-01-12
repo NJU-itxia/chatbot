@@ -6,6 +6,8 @@ import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.service.MemberAuthenticationService
+import cn.itxia.chatbot.service.message.AbstractCommandProcessService
+import cn.itxia.chatbot.service.message.AbstractMessageProcessService
 import cn.itxia.chatbot.util.CommandWords
 import cn.itxia.chatbot.util.StorageUtil
 import cn.itxia.chatbot.util.StorageWrapper
@@ -32,7 +34,7 @@ private fun getRandomLearnResponse(): String {
 }
 
 @Service
-private class Learn : CommandProcessService() {
+private class Learn : AbstractCommandProcessService() {
 
     override val order: Int = baseOrder + 1
 
@@ -126,7 +128,7 @@ private class Learn : CommandProcessService() {
 }
 
 @Service
-private class Forget : CommandProcessService() {
+private class Forget : AbstractCommandProcessService() {
 
     override val order: Int = baseOrder + 2
 
@@ -161,7 +163,7 @@ private class Forget : CommandProcessService() {
 }
 
 @Service
-private class ReplyKeyword : MessageProcessService() {
+private class ReplyKeyword : AbstractMessageProcessService() {
 
     override val order: Int = baseOrder + 3
 

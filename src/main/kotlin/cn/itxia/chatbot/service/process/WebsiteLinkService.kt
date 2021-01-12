@@ -2,11 +2,12 @@ package cn.itxia.chatbot.service.process
 
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
+import cn.itxia.chatbot.service.message.AbstractCommandProcessService
 import cn.itxia.chatbot.util.CommandWords
 import org.springframework.stereotype.Service
 
 @Service
-class WebsiteLinkService : CommandProcessService() {
+class WebsiteLinkService : AbstractCommandProcessService() {
 
     override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
         return isExplicitCall && CommandWords.WEBSITE_LINKS.contains(commandName)
