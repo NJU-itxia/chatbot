@@ -1,5 +1,6 @@
-package cn.itxia.chatbot.service.process
+package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
@@ -45,11 +46,11 @@ private class Learn : AbstractCommandProcessService() {
     @Autowired
     private lateinit var memberAuthenticationService: MemberAuthenticationService
 
-    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
-        return isExplicitCall && CommandWords.KEYWORD_LEARN.contains(commandName)
+    override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
+        return message.isExplicitCall && CommandWords.KEYWORD_LEARN.contains(command.commandName)
     }
 
-    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(command: Command, message: IncomingMessage): ProcessResult {
         if (message !is QQGroupIncomingMessage) {
             return ProcessResult.next()
         }
@@ -59,7 +60,7 @@ private class Learn : AbstractCommandProcessService() {
             return ProcessResult.reply("请先在后台系统验证QQ号.", true)
         }
 
-        val split = argument.split(" ")
+        val split = command.argument.split(" ")
 
         when (split.size) {
             1 -> {
@@ -135,11 +136,11 @@ private class Forget : AbstractCommandProcessService() {
     @Autowired
     private lateinit var memberAuthenticationService: MemberAuthenticationService
 
-    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
-        return isExplicitCall && CommandWords.KEYWORD_FORGET.contains(commandName)
+    override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
+        return message.isExplicitCall && CommandWords.KEYWORD_FORGET.contains(command.commandName)
     }
 
-    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(command: Command, message: IncomingMessage): ProcessResult {
         if (message !is QQGroupIncomingMessage) {
             return ProcessResult.next()
         }
@@ -147,6 +148,8 @@ private class Forget : AbstractCommandProcessService() {
         if (!memberAuthenticationService.validateMemberQQ(qqID)) {
             return ProcessResult.reply("请先在后台系统验证QQ号.", true)
         }
+
+        val argument = command.argument
 
         val isRemove = keywordList.remove {
             it.keyword == argument

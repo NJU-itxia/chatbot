@@ -1,5 +1,6 @@
-package cn.itxia.chatbot.service.process
+package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.ProcessResult.Companion.reply
 import cn.itxia.chatbot.message.incoming.IncomingMessage
@@ -16,15 +17,16 @@ class DiceService : AbstractCommandProcessService() {
 
     override val isEnable: Boolean = false
 
-    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
-        return commandName == "dice"
+    override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
+        return command.commandName == "dice"
     }
 
     private fun onceDice(): Int {
         return floor(Math.random() * 5 + 1).toInt()
     }
 
-    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(command: Command, message: IncomingMessage): ProcessResult {
+        val argument = command.argument
         if (argument == "") {
             //抛一次
             val result = onceDice()

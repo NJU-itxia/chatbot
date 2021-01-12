@@ -1,5 +1,6 @@
-package cn.itxia.chatbot.service.process
+package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.service.message.AbstractCommandProcessService
@@ -47,7 +48,9 @@ class HelpManualService : AbstractCommandProcessService() {
         alias: ${CommandWords.HELP_MANUAL.joinToString(",")}
     """.trimIndent()
 
-    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(command: Command, message: IncomingMessage): ProcessResult {
+        val argument = command.argument
+
         return when (true) {
             argument == "" -> {
                 ProcessResult.reply(allCommandDescription)
@@ -67,11 +70,11 @@ class HelpManualService : AbstractCommandProcessService() {
         }
     }
 
-    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
-        if (commandName != "help") {
+    override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
+        if (command.commandName != "help") {
             return false
         }
-        if (isArgumentEmpty && !isExplicitCall) {
+        if (command.isArgumentEmpty && !message.isExplicitCall) {
             return false
         }
         return true

@@ -1,5 +1,6 @@
-package cn.itxia.chatbot.service.process
+package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.ProcessResult.Companion.reply
 import cn.itxia.chatbot.message.incoming.IncomingMessage
@@ -13,11 +14,11 @@ import org.springframework.stereotype.Service
  */
 @Service
 class AliveCheckService : AbstractCommandProcessService() {
-    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
-        return isExplicitCall && CommandWords.ALIVE_CHECK.contains(commandName)
+    override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
+        return message.isExplicitCall && CommandWords.ALIVE_CHECK.contains(command.commandName)
     }
 
-    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(command: Command, message: IncomingMessage): ProcessResult {
         return reply("啊，我还活着", true)
     }
 }

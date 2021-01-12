@@ -1,5 +1,6 @@
-package cn.itxia.chatbot.service.process
+package cn.itxia.chatbot.service.messageImpl
 
+import cn.itxia.chatbot.message.Command
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
 import cn.itxia.chatbot.service.message.AbstractCommandProcessService
@@ -9,11 +10,11 @@ import org.springframework.stereotype.Service
 @Service
 class WebsiteLinkService : AbstractCommandProcessService() {
 
-    override fun shouldExecute(commandName: String, isExplicitCall: Boolean, isArgumentEmpty: Boolean): Boolean {
-        return isExplicitCall && CommandWords.WEBSITE_LINKS.contains(commandName)
+    override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
+        return message.isExplicitCall && CommandWords.WEBSITE_LINKS.contains(command.commandName)
     }
 
-    override fun executeCommand(argument: String, isExplicitCall: Boolean, message: IncomingMessage): ProcessResult {
+    override fun executeCommand(command: Command, message: IncomingMessage): ProcessResult {
         return ProcessResult.reply(
             """
                 预约维修: https://nju.itxia.cn
