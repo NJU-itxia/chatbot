@@ -75,7 +75,7 @@ class TrashMessageService : AbstractCommandProcessService() {
 
 好了，现在我们已经建好我们的服务类. 虽然好像什么都没干，但它已经成为机器人的一部分了!
 
-接下来我们来实现废话功能 😊
+接下来我们来实现废话功能 😛
 
 ### 判断指令
 
