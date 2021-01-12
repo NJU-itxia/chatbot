@@ -20,7 +20,7 @@ import java.net.URLEncoder
  * 搜索语雀文档.
  * */
 @Service
-class YuqueDocumentSearchService : AbstractCommandProcessService() {
+private class YuqueDocumentSearchService : AbstractCommandProcessService() {
 
     @Value("\${itxia.bot.yuque.token}")
     private lateinit var yuqueApiToken: String

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
  * 复读机.
  * */
 @Service
-class RepeaterService : AbstractCommandProcessService() {
+private class RepeaterService : AbstractCommandProcessService() {
 
     override val priority = ProcessPriority.REPEATER
 

@@ -13,7 +13,7 @@ import kotlin.math.floor
  * This is just a demo.
  * */
 //@Service
-class DiceService : AbstractCommandProcessService() {
+private class DiceService : AbstractCommandProcessService() {
 
     override val isEnable: Boolean = false
 

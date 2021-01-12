@@ -8,7 +8,7 @@ import cn.itxia.chatbot.util.CommandWords
 import org.springframework.stereotype.Service
 
 @Service
-class HelpManualService : AbstractCommandProcessService() {
+private class HelpManualService : AbstractCommandProcessService() {
 
     private val allCommandDescription: String by lazy {
         val buildDescription: (List<String>, String, String) -> String =

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
  * 看看机器人是不是挂掉了.
  */
 @Service
-class AliveCheckService : AbstractCommandProcessService() {
+private class AliveCheckService : AbstractCommandProcessService() {
     override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
         return message.isExplicitCall && CommandWords.ALIVE_CHECK.contains(command.commandName)
     }

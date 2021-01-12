@@ -8,7 +8,7 @@ import cn.itxia.chatbot.util.CommandWords
 import org.springframework.stereotype.Service
 
 @Service
-class WebsiteLinkService : AbstractCommandProcessService() {
+private class WebsiteLinkService : AbstractCommandProcessService() {
 
     override fun shouldExecute(command: Command, message: IncomingMessage): Boolean {
         return message.isExplicitCall && CommandWords.WEBSITE_LINKS.contains(command.commandName)
