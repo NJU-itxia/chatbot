@@ -18,6 +18,9 @@ class MemberAuthenticationService {
     @Value("\${itxia.bot.hook.token}")
     private lateinit var token: String
 
+    @Value("\${itxia.bot.train.auth}")
+    private var enable: Boolean = false
+
     private val list = StorageWrapper("auth.json", object : TypeReference<MutableList<AuthenticationInfo>>() {})
 
     private val client = OkHttpClient()
@@ -27,6 +30,9 @@ class MemberAuthenticationService {
     private val logger = getLogger()
 
     fun validateMemberQQ(qqID: String): Boolean {
+        if (!enable) {
+            return true
+        }
         val authenticationInfo = list.get { it.qqID == qqID }
         if (authenticationInfo?.isItxiaMember == true) {
             return true
