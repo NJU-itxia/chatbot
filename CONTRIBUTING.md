@@ -123,9 +123,9 @@ class TrashMessageService : AbstractCommandProcessService() {
         """.trimIndent()
 
         val actualArgument = if (command.isArgumentEmpty) {
-            command.argument
-        } else {
             "说废话"
+        } else {
+            command.argument
         }
 
         val trash = template.replace("0", actualArgument)
@@ -163,9 +163,9 @@ class TrashMessageService : AbstractCommandProcessService() {
         """.trimIndent()
 
         val actualArgument = if (command.isArgumentEmpty) {
-            command.argument
-        } else {
             "说废话"
+        } else {
+            command.argument
         }
 
         val trash = template.replace("0", actualArgument)
