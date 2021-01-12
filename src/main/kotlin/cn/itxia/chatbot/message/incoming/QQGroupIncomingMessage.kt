@@ -16,7 +16,7 @@ data class QQGroupIncomingMessage(
     override val messageFrom: MessageFrom = MessageFrom.QQ_GROUP_CHAT
 
     override val content: String =
-        event.message.filterIsInstance<PlainText>().joinToString(separator = "") { it.contentToString() }
+        event.message.filterIsInstance<PlainText>().joinToString(separator = "") { it.contentToString() }.trim()
 
     override val trackID: String = event.group.id.toString()
 
