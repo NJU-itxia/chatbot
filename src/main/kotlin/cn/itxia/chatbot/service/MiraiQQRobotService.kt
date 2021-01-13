@@ -1,6 +1,8 @@
 package cn.itxia.chatbot.service
 
+import cn.itxia.chatbot.message.incoming.QQFriendIncomingMessage
 import cn.itxia.chatbot.message.incoming.QQGroupIncomingMessage
+import cn.itxia.chatbot.message.incoming.QQTempIncomingMessage
 import cn.itxia.chatbot.message.response.ImageResponseMessage
 import cn.itxia.chatbot.message.response.QQResponseMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
@@ -10,8 +12,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
+import net.mamoe.mirai.contact.Contact
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
+import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
+import net.mamoe.mirai.event.events.TempMessageEvent
 import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.sendTo
 import net.mamoe.mirai.utils.BotConfiguration
@@ -78,8 +83,10 @@ class MiraiQQRobotService {
 
             bot = it
 
-            //监听群消息
+            //监听QQ消息
             subscribeGroupMessage()
+            subscribeFriendMessage()
+            subscribeTempMessage()
 
         }.join()
     }
@@ -136,27 +143,13 @@ class MiraiQQRobotService {
                 )
 
                 val replyCallback = fun(responseMessage: ResponseMessage) {
-
-                    GlobalScope.launch {
-                        responseMessage.let {
-                            when (it) {
-                                is TextResponseMessage -> {
-                                    if (it.shouldQuoteReply) {
-                                        subject.sendMessage(message.quote() + it.content)
-                                    } else {
-                                        subject.sendMessage(it.content)
-                                    }
-                                }
-                                is QQResponseMessage -> {
-                                    it.toMessageChain().sendTo(group)
-                                }
-                                is ImageResponseMessage -> {
-                                    subject.sendImage(it.image)
-                                }
-                                else -> {
-                                    logger.warn("未支持的返回消息类型.")
-                                }
+                    responseMessage.let {
+                        if (it is TextResponseMessage && it.shouldQuoteReply) {
+                            GlobalScope.launch {
+                                subject.sendMessage(message.quote() + it.content)
                             }
+                        } else {
+                            subject.reply(it)
                         }
                     }
                 }
@@ -166,6 +159,57 @@ class MiraiQQRobotService {
             }
         }
 
+    }
+
+    /**
+     * 监听私聊消息.
+     * */
+    private fun subscribeTempMessage() {
+        bot!!.eventChannel.subscribeAlways<TempMessageEvent> { event ->
+            val message = QQTempIncomingMessage(event)
+            replyService.replyMessage(message).forEach {
+                subject.reply(it)
+            }
+        }
+    }
+
+    /**
+     * 监听好友消息.
+     * */
+    private fun subscribeFriendMessage() {
+        bot!!.eventChannel.subscribeAlways<FriendMessageEvent> { event ->
+            val message = QQFriendIncomingMessage(event)
+            replyService.replyMessage(message).forEach {
+                subject.reply(it)
+            }
+        }
+    }
+
+    /**
+     * 扩展Mirai的回复函数.
+     *
+     * 相当于包装了subject.sendMessage().
+     * */
+    fun Contact.reply(message: ResponseMessage) {
+        val contact = this
+        GlobalScope.launch {
+            message.let {
+                when (it) {
+                    is TextResponseMessage -> {
+                        sendMessage(it.content)
+                    }
+                    is QQResponseMessage -> {
+                        it.toMessageChain().sendTo(contact)
+                    }
+                    is ImageResponseMessage -> {
+                        sendImage(it.image)
+                    }
+                    else -> {
+                        logger.warn("未支持的返回消息类型.")
+                    }
+                }
+            }
+        }
     }
 
 }
