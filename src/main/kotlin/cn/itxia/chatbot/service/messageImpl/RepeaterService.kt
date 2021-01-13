@@ -38,7 +38,6 @@ private class RepeaterService : AbstractCommandProcessService() {
             }
             else -> "命令无效，请输入on/off."
         }
-        //直接复读
         return ProcessResult.reply(content)
     }
 
