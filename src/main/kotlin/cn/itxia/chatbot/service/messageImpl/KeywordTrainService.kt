@@ -185,10 +185,9 @@ private class ReplyKeyword : AbstractMessageProcessService() {
         }
 
         //随机选择一个
-        val selectedItem = matchItems[(Math.random() * matchItems.size).toInt()]
-
-        val responseMessage = selectedItem.let {
+        val responseMessage = matchItems.randomOrNull().let {
             when (true) {
+                it == null -> null
                 it.responseText != null -> TextResponseMessage(it.responseText)
                 it.imageFileName != null -> ImageResponseMessage(StorageUtil.implementImageFile(it.imageFileName))
                 else -> null
