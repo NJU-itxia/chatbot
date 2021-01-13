@@ -2,23 +2,21 @@ package cn.itxia.chatbot.message.incoming
 
 import cn.itxia.chatbot.enum.MessageFrom
 import cn.itxia.chatbot.message.Command
+import cn.itxia.chatbot.util.MiraiUtil
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.message.data.At
-import net.mamoe.mirai.message.data.PlainText
 
 /**
  * 来自QQ群的消息.
  * */
 data class QQGroupIncomingMessage(
-    val event: GroupMessageEvent
+    val event: GroupMessageEvent,
 ) : IncomingMessage {
 
     override val messageFrom: MessageFrom = MessageFrom.QQ_GROUP_CHAT
 
-    override val content: String =
-        event.message.filterIsInstance<PlainText>().joinToString(separator = "") { it.contentToString() }.trim()
+    override val content: String = MiraiUtil.convertMessageChainToPlainText(event.message)
 
-    override val trackID: String = event.group.id.toString()
+    override val trackID: String = MiraiUtil.getTrackIDFromEvent(event)
 
     /**
      * 是否在@机器人.
@@ -26,9 +24,7 @@ data class QQGroupIncomingMessage(
      * 要判断是否在叫机器人, 请使用isExplicitCall.
      * @see isExplicitCall
      * */
-    val isAtMe: Boolean = event.message.any {
-        it is At && it.target == event.bot.id
-    }
+    val isAtMe: Boolean = MiraiUtil.isAtMe(event)
 
     /**
      * 消息是否以"bot "开头.
