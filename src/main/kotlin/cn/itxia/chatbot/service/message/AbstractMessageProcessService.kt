@@ -1,5 +1,6 @@
 package cn.itxia.chatbot.service.message
 
+import cn.itxia.chatbot.enum.MessageFrom
 import cn.itxia.chatbot.enum.ProcessPriority
 import cn.itxia.chatbot.message.ProcessResult
 import cn.itxia.chatbot.message.incoming.IncomingMessage
@@ -21,6 +22,13 @@ abstract class AbstractMessageProcessService {
      * 表示是否启用该Service.
      * */
     open val isEnable: Boolean = true
+
+    /**
+     * 接收的消息类型.
+     *
+     * 默认接收全部类型的消息.
+     * */
+    open val acceptMessageFrom: List<MessageFrom> = MessageFrom.values().toList()
 
     /**
      * 处理消息.

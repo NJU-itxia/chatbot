@@ -25,6 +25,11 @@ class ReplyService : BeanPostProcessor {
      * */
     fun replyMessage(incomingMessage: IncomingMessage, reply: (ResponseMessage) -> Unit) {
         for (messageProcessService in messageProcessServiceList) {
+            //如果service不接收此类型消息,则跳过
+            if (!messageProcessService.acceptMessageFrom.contains(incomingMessage.messageFrom)) {
+                continue
+            }
+
             //交给service处理消息
             val result = messageProcessService.process(incomingMessage)
 
