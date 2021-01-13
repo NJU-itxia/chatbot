@@ -15,5 +15,11 @@ enum class MessageFrom {
     /**
      * QQ一对一私聊.
      * */
-    QQ_FRIEND_CHAT
+    QQ_FRIEND_CHAT,
+
+    /**
+     * QQ群临时会话.
+     * */
+    QQ_TEMP_CHAT,
+
 }
