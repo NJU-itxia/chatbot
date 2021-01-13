@@ -8,7 +8,9 @@ import cn.itxia.chatbot.message.response.QQResponseMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.util.getLogger
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
@@ -48,10 +50,14 @@ class MiraiQQRobotService {
 
     private val logger = getLogger()
 
+    private val job = Job()
+
+    private val scope = CoroutineScope(job)
+
     private var bot: Bot? = null
 
     init {
-        GlobalScope.launch {
+        scope.launch {
             startMiraiBot()
         }
     }
@@ -105,7 +111,7 @@ class MiraiQQRobotService {
     fun sendToGroups(groupIDList: List<Long>, vararg messages: ResponseMessage) {
         groupIDList.mapNotNull { bot!!.getGroup(it) }.forEach { group ->
             messages.forEach { message ->
-                GlobalScope.launch {
+                scope.launch {
                     when (message) {
                         is TextResponseMessage -> {
                             group.sendMessage(message.toTextMessage())
@@ -192,7 +198,7 @@ class MiraiQQRobotService {
      * */
     fun Contact.reply(message: ResponseMessage) {
         val contact = this
-        GlobalScope.launch {
+        scope.launch {
             message.let {
                 when (it) {
                     is TextResponseMessage -> {
