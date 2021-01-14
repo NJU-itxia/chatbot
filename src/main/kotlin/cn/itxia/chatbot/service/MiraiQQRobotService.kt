@@ -8,10 +8,7 @@ import cn.itxia.chatbot.message.response.QQResponseMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.util.getLogger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.contact.Contact
@@ -66,6 +63,19 @@ class MiraiQQRobotService {
      * 启动/重启QQ机器人.
      * */
     suspend fun startMiraiBot() {
+        //make sure lateinit vars are all init
+        while (true) {
+            if (
+                this.qqID != 0L &&
+                this::qqPassword.isInitialized &&
+                this::groupsToListen.isInitialized
+            ) {
+                break
+            }
+            logger.info("等待lateinit vars初始化...")
+            delay(1000)
+        }
+
         if (!isEnable) {
             logger.info("QQ机器人未启用.")
             return
