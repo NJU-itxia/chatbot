@@ -10,13 +10,9 @@ import net.mamoe.mirai.event.events.GroupMessageEvent
  * */
 data class QQGroupIncomingMessage(
     val event: GroupMessageEvent,
-) : IncomingMessage {
+) : AbstractQQIncomingMessage(event) {
 
     override val messageFrom: MessageFrom = MessageFrom.QQ_GROUP_CHAT
-
-    override val content: String = MiraiUtil.convertMessageChainToPlainText(event.message)
-
-    override val trackID: String = MiraiUtil.getTrackIDFromEvent(event)
 
     /**
      * 是否在@机器人.
