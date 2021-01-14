@@ -18,7 +18,7 @@ import net.mamoe.mirai.contact.Contact
 import net.mamoe.mirai.contact.Contact.Companion.sendImage
 import net.mamoe.mirai.event.events.FriendMessageEvent
 import net.mamoe.mirai.event.events.GroupMessageEvent
-import net.mamoe.mirai.event.events.TempMessageEvent
+import net.mamoe.mirai.event.events.GroupTempMessageEvent
 import net.mamoe.mirai.message.data.MessageSource.Key.quote
 import net.mamoe.mirai.message.data.sendTo
 import net.mamoe.mirai.utils.BotConfiguration
@@ -171,7 +171,7 @@ class MiraiQQRobotService {
      * 监听私聊消息.
      * */
     private fun subscribeTempMessage() {
-        bot!!.eventChannel.subscribeAlways<TempMessageEvent> { event ->
+        bot!!.eventChannel.subscribeAlways<GroupTempMessageEvent> { event ->
             val message = QQTempIncomingMessage(event)
             replyService.replyMessage(message).forEach {
                 subject.reply(it)
