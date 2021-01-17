@@ -37,3 +37,7 @@ out/
 .vscode/
 
 *.properties
+device.json
+data
+.gitignore
+
