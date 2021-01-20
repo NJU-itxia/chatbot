@@ -15,7 +15,6 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     //下载依赖慢的话用下面的国内源，但不一定有mirai最新的包，也许会build fail
-/*
     maven {
         url = uri("https://mirrors.cloud.tencent.com/nexus/repository/maven-public/")
     }
@@ -25,7 +24,6 @@ repositories {
     jcenter {
         url = uri("https://maven.aliyun.com/repository/public")
     }
-    */
     mavenCentral()
     jcenter()
 }
