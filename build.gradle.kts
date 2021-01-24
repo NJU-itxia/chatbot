@@ -32,14 +32,14 @@ kotlin.target.attributes.attribute(KotlinPlatformType.attribute, KotlinPlatformT
 
 dependencies {
     //mirai qq bot library
-    implementation("net.mamoe:mirai-core-jvm:2.0.0") {
+    implementation("net.mamoe:mirai-core-jvm:2.1.0") {
         exclude("net.mamoe", "mirai-core-api")
         exclude("net.mamoe", "mirai-core-utils")
     }
-    implementation("net.mamoe:mirai-core-api-jvm:2.0.0") {
+    implementation("net.mamoe:mirai-core-api-jvm:2.1.0") {
         exclude("net.mamoe", "mirai-core-utils")
     }
-    implementation("net.mamoe:mirai-core-utils-jvm:2.0.0")
+    implementation("net.mamoe:mirai-core-utils-jvm:2.1.0")
 
     //http request lib
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
