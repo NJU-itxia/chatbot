@@ -31,6 +31,9 @@ repositories {
 kotlin.target.attributes.attribute(KotlinPlatformType.attribute, KotlinPlatformType.jvm)
 
 dependencies {
+    //coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+
     //mirai qq bot library
     implementation("net.mamoe:mirai-core-jvm:2.1.0") {
         exclude("net.mamoe", "mirai-core-api")
