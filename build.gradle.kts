@@ -35,14 +35,15 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
     //mirai qq bot library
-    implementation("net.mamoe:mirai-core-jvm:2.1.0") {
+    val miraiVersion = "2.3.2"
+    implementation("net.mamoe:mirai-core-jvm:$miraiVersion") {
         exclude("net.mamoe", "mirai-core-api")
         exclude("net.mamoe", "mirai-core-utils")
     }
-    implementation("net.mamoe:mirai-core-api-jvm:2.1.0") {
+    implementation("net.mamoe:mirai-core-api-jvm:$miraiVersion") {
         exclude("net.mamoe", "mirai-core-utils")
     }
-    implementation("net.mamoe:mirai-core-utils-jvm:2.1.0")
+    implementation("net.mamoe:mirai-core-utils-jvm:$miraiVersion")
 
     //http request lib
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
