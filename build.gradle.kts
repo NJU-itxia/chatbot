@@ -35,7 +35,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
     //mirai qq bot library
-    val miraiVersion = "2.3.2"
+    val miraiVersion = "2.4.0"
     implementation("net.mamoe:mirai-core-jvm:$miraiVersion") {
         exclude("net.mamoe", "mirai-core-api")
         exclude("net.mamoe", "mirai-core-utils")
