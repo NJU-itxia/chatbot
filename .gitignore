@@ -38,6 +38,5 @@ out/
 
 *.properties
 device.json
-data
-.gitignore
-
+data/
+cache/

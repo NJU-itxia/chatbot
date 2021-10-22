@@ -90,7 +90,7 @@ class MiraiQQRobotService {
 
         BotFactory.newBot(qqID, qqPassword, fun BotConfiguration.() {
             fileBasedDeviceInfo("device.json")
-            protocol = BotConfiguration.MiraiProtocol.ANDROID_PHONE
+            protocol = BotConfiguration.MiraiProtocol.ANDROID_PAD
         }).also {
             it.login()
             if (it.isOnline) {
