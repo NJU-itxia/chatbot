@@ -8,7 +8,10 @@ import cn.itxia.chatbot.message.response.QQResponseMessage
 import cn.itxia.chatbot.message.response.ResponseMessage
 import cn.itxia.chatbot.message.response.TextResponseMessage
 import cn.itxia.chatbot.util.getLogger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.BotFactory
 import net.mamoe.mirai.contact.Contact
@@ -161,7 +164,7 @@ class MiraiQQRobotService {
                 val replyCallback = fun(responseMessage: ResponseMessage) {
                     responseMessage.let {
                         if (it is TextResponseMessage && it.shouldQuoteReply) {
-                            GlobalScope.launch {
+                            scope.launch {
                                 subject.sendMessage(message.quote() + it.content)
                             }
                         } else {

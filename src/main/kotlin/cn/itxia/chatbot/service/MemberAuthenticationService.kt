@@ -3,8 +3,7 @@ package cn.itxia.chatbot.service
 import cn.itxia.chatbot.util.StorageWrapper
 import cn.itxia.chatbot.util.getLogger
 import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -25,7 +24,7 @@ class MemberAuthenticationService {
 
     private val client = OkHttpClient()
 
-    private val mapper = ObjectMapper().registerModule(KotlinModule())
+    private val mapper = jacksonObjectMapper()
 
     private val logger = getLogger()
 

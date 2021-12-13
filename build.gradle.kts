@@ -35,7 +35,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
     //mirai qq bot library
-    val miraiVersion = "2.7.1"
+    val miraiVersion = "2.8.2"
     implementation("net.mamoe:mirai-core-jvm:$miraiVersion") {
         exclude("net.mamoe", "mirai-core-api")
         exclude("net.mamoe", "mirai-core-utils")
@@ -46,11 +46,11 @@ dependencies {
     implementation("net.mamoe:mirai-core-utils-jvm:$miraiVersion")
 
     //http request lib
-    implementation("com.squareup.okhttp3:okhttp:4.9.2")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
     //apache log4j
-    implementation("org.apache.logging.log4j:log4j-api:2.14.1")
-    implementation("org.apache.logging.log4j:log4j-core:2.14.1")
+    implementation("org.apache.logging.log4j:log4j-api:2.15.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.15.0")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")

@@ -20,7 +20,7 @@ data class QQGroupIncomingMessage(
      * 要判断是否在叫机器人, 请使用isExplicitCall.
      * @see isExplicitCall
      * */
-    val isAtMe: Boolean = MiraiUtil.isAtMe(event)
+    private val isAtMe: Boolean = MiraiUtil.isAtMe(event)
 
     /**
      * 消息是否以"bot "开头.
